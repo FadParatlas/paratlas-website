@@ -99,28 +99,8 @@ class BabylonScene extends Component {
       { height: 6, width: 6, subdivisions: 2 },
       scene
     );
-    var groundMaterial = new BABYLON.StandardMaterial("grass0", scene);
-    groundMaterial.diffuseTexture = new BABYLON.Texture(
-      "./assets/ground.jpeg",
-      scene
-    );
-    ground.material = groundMaterial;
 
     //Add SkyBox
-    var photoSphere = BABYLON.Mesh.CreateSphere("skyBox", 16.0, 50.0, scene);
-    var skyboxMaterial = new BABYLON.StandardMaterial("smat", scene);
-    skyboxMaterial.emissiveTexture = new BABYLON.Texture(
-      "assets/skybox.jpeg",
-      scene,
-      1,
-      0
-    );
-    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    skyboxMaterial.emissiveTexture.uOffset = -Math.PI / 2; // left-right
-    skyboxMaterial.emissiveTexture.uOffset = 0.1; // up-down
-    skyboxMaterial.backFaceCulling = false;
-    photoSphere.material = skyboxMaterial;
   };
 
   /**
