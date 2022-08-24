@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import { useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
 import 'babylonjs-loaders';
+import { SceneLoader } from '@babylonjs/core/Loading';
+
+console.log(SceneLoader.IsPluginForExtensionAvailable('.obj'));
+
 var scene;
 var boxMesh;
 /**
@@ -63,7 +66,9 @@ class BabylonScene extends Component {
   };
 
   addExternalModels = () => {
-    var car = BABYLON.SceneLoader.ImportMesh("","https://raw.githubusercontent.com/FadParatlas/paratlas-website/master/public/assets/", "player.glb", scene)
+    SceneLoader.ImportMeshAsync('', 'https://assets.babylonjs.com/meshes/both_houses_scene.babylon').then(result => {
+      const mesh = result.meshes[0];
+    });
   }
 
   /**
