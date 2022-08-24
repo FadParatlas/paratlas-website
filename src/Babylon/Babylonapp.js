@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
 
 var scene;
@@ -7,14 +8,18 @@ var boxMesh;
  * Example temnplate of using Babylon JS with React
  */
 class BabylonScene extends Component {
+
   constructor(props) {
     super(props);
     this.state = { useWireFrame: false, shouldAnimate: false };
   }
 
+  
+
   componentDidMount = () => {
     // start ENGINE
     this.engine = new BABYLON.Engine(this.canvas, true);
+    
 
     //Create Scene
     scene = new BABYLON.Scene(this.engine);
@@ -52,6 +57,7 @@ class BabylonScene extends Component {
 
   onWindowResize = event => {
     this.engine.resize();
+    console.log("Aaaaa");
   };
 
   /**
@@ -130,7 +136,7 @@ class BabylonScene extends Component {
         ref={canvas => {
           this.canvas = canvas;
         }}
-      />
+      ></canvas>
     );
   }
 }

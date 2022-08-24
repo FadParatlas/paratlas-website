@@ -1,5 +1,5 @@
 .navbar {
-    background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
+  background: linear-gradient(to bottom, white , transparent);
     height: 80px;
     display: flex;
     justify-content: center;
@@ -33,6 +33,7 @@
   .fa-typo3 {
     margin-left: 0.5rem;
     font-size: 1.8rem;
+
   }
   
   .nav-menu {
@@ -89,7 +90,7 @@
       position: absolute;
       top: 80px;
       left: -100%;
-      opacity: 1;
+      opacity: 0.5;
       transition: all 0.5s ease;
     }
   
