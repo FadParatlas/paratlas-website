@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { useEffect, useRef } from "react";
 import * as BABYLON from "@babylonjs/core";
-
+import 'babylonjs-loaders';
 var scene;
 var boxMesh;
 /**
@@ -33,6 +33,8 @@ class BabylonScene extends Component {
     //--Meshes---
     this.addModels();
 
+    this.addExternalModels();
+
     //--Ground---
     this.addGround();
 
@@ -59,6 +61,11 @@ class BabylonScene extends Component {
     this.engine.resize();
     console.log("Aaaaa");
   };
+
+  addExternalModels = () => {
+    var car = BABYLON.SceneLoader.Append("./public/assets/", "player.glb", scene, function(meshes){
+    })
+  }
 
   /**
    * Add Lights
