@@ -63,8 +63,7 @@ class BabylonScene extends Component {
   };
 
   addExternalModels = () => {
-    var car = BABYLON.SceneLoader.Append("./public/assets/", "player.glb", scene, function(meshes){
-    })
+    var car = BABYLON.SceneLoader.ImportMesh("","https://raw.githubusercontent.com/FadParatlas/paratlas-website/master/public/assets/", "player.glb", scene)
   }
 
   /**
