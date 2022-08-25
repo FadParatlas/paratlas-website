@@ -6,10 +6,12 @@ import { SceneLoader } from '@babylonjs/core/Loading';
 console.log(SceneLoader.IsPluginForExtensionAvailable('.obj'));
 
 var scene;
+var camera;
 var boxMesh;
-/**
- * Example temnplate of using Babylon JS with React
- */
+var startingPoint;
+var currentMesh;
+var ground;
+
 class BabylonScene extends Component {
 
   constructor(props) {
@@ -18,27 +20,22 @@ class BabylonScene extends Component {
   }
 
   componentDidMount = () => {
-    // start ENGINE
-    this.engine = new BABYLON.Engine(this.canvas, true);
-    
 
-    //Create Scene
+    this.engine = new BABYLON.Engine(this.canvas, true);
+
     scene = new BABYLON.Scene(this.engine);
 
-    //--Light---
     this.addLight();
 
     //--Camera---
     this.addCamera();
 
-    //--Meshes---
-    this.addModels();
-
     this.addExternalModels();
 
     //--Ground---
     this.addGround();
-
+    this.changeSkybox();
+    this.addInteractivity();
     // Add Events
     window.addEventListener("resize", this.onWindowResize, false);
 
@@ -47,11 +44,6 @@ class BabylonScene extends Component {
       scene.render();
     });
 
-    //Animation
-    scene.registerBeforeRender(() => {
-      boxMesh.rotation.y += 0.01;
-      boxMesh.rotation.x += 0.01;
-    });
   };
 
   componentWillUnmount() {
@@ -64,24 +56,13 @@ class BabylonScene extends Component {
   };
 
   addExternalModels = () => {
-    let assetManager = new BABYLON.AssetsManager(scene);
-    let model = assetManager.addMeshTask("model", "", "https://raw.githubusercontent.com/FadParatlas/paratlas-website/master/public/assets/", "test.obj");
- 
-    model.onSuccess = function(t){
-        t.loadedMeshes[0].position = BABYLON.Vector3.Zero();
-    }
-
-    model.onError = function(t, message, exception){
-      console.error(message, exception);
-  }
-
-  assetManager.load();
+    BABYLON.SceneLoader.ImportMesh("",
+      "https://dl.dropbox.com/s/z3u4yheu9fcdfd2/", "an_animated_cat.glb?", scene, function (meshes) {
+        var cat = meshes[0];
+        cat.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
+      });
 
   }
-
-  /**
-   * Add Lights
-   */
   addLight = () => {
     //---------- LIGHT---------------------
     // Create a basic light, aiming 0,1,0 - meaning, to the sky.
@@ -92,12 +73,9 @@ class BabylonScene extends Component {
     );
   };
 
-  /**
-   * Add Camera
-   */
   addCamera = () => {
     // ---------------ArcRotateCamera or Orbit Control----------
-    var camera = new BABYLON.ArcRotateCamera(
+    camera = new BABYLON.ArcRotateCamera(
       "Camera",
       Math.PI / 2,
       Math.PI / 4,
@@ -114,38 +92,83 @@ class BabylonScene extends Component {
     camera.setPosition(new BABYLON.Vector3(5, 5, 5));
   };
 
-  /**
-   * Create Stage and Skybox
-   */
+  addInteractivity = () => {
+    var getGroundPosition = function () {
+      var pickinfo = scene.pick(scene.pointerX, scene.pointerY, function (mesh) { return mesh == ground; });
+      if (pickinfo.hit) {
+          return pickinfo.pickedPoint;
+      }
+
+      return null;
+  }
+    var pointerDown = function (mesh) {
+      currentMesh = mesh;
+      console.log(mesh);
+      startingPoint = getGroundPosition();
+      if (startingPoint) { // we need to disconnect camera from canvas
+        setTimeout(function () {
+          console.log("aaaa");
+          camera.detachControl(this.canvas);
+        }, 0);
+      }
+    }
+
+    var pointerUp = function () {
+      if (startingPoint) {
+        camera.attachControl(this.canvas, true);
+        startingPoint = null;
+        return;
+      }
+    }
+
+    var pointerMove = function () {
+      if (!startingPoint) {
+        return;
+      }
+      var current = getGroundPosition();
+      if (!current) {
+        return;
+      }
+
+      var diff = current.subtract(startingPoint);
+      currentMesh.position.addInPlace(diff);
+
+      startingPoint = current;
+
+    }
+
+    scene.onPointerObservable.add((pointerInfo) => {
+      switch (pointerInfo.type) {
+        case BABYLON.PointerEventTypes.POINTERDOWN:
+          if (pointerInfo.pickInfo.hit && pointerInfo.pickInfo.pickedMesh != ground) {
+            pointerDown(pointerInfo.pickInfo.pickedMesh)
+          }
+          break;
+        case BABYLON.PointerEventTypes.POINTERUP:
+          pointerUp();
+          break;
+        case BABYLON.PointerEventTypes.POINTERMOVE:
+          pointerMove();
+          break;
+      }
+    });
+  }
+  changeSkybox = () => {
+    scene.clearColor = new BABYLON.Color3(0, 0, 0);
+  }
   addGround = () => {
     // Create a built-in "ground" shape.
-    var ground = BABYLON.MeshBuilder.CreateGround(
+    ground = BABYLON.MeshBuilder.CreateGround(
       "ground1",
       { height: 6, width: 6, subdivisions: 2 },
       scene
     );
 
-    //Add SkyBox
-  };
-
-  /**
-   * Add Models
-   */
-  addModels = () => {
-    // Add BOX
-    boxMesh = BABYLON.MeshBuilder.CreateBox(
-      "box",
-      { height: 1, width: 1, depth: 1 },
-      scene
-    );
-    boxMesh.position.y = 1;
-
-    var woodMaterial = new BABYLON.StandardMaterial("wood", scene);
-    woodMaterial.diffuseTexture = new BABYLON.Texture(
-      "./assets/portal_cube.png",
-      scene
-    );
-    boxMesh.material = woodMaterial;
+    var groundMat = new BABYLON.StandardMaterial("ground", scene);
+    groundMat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+    groundMat.specularColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+    groundMat.emissiveColor = BABYLON.Color3.Purple();
+    ground.material = groundMat;
   };
 
   render() {
