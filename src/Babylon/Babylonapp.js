@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import * as BABYLON from "@babylonjs/core";
-import 'babylonjs-loaders';
+import '@babylonjs/loaders';
 import { SceneLoader } from '@babylonjs/core/Loading';
 
 console.log(SceneLoader.IsPluginForExtensionAvailable('.obj'));
@@ -16,8 +16,6 @@ class BabylonScene extends Component {
     super(props);
     this.state = { useWireFrame: false, shouldAnimate: false };
   }
-
-  
 
   componentDidMount = () => {
     // start ENGINE
@@ -66,9 +64,19 @@ class BabylonScene extends Component {
   };
 
   addExternalModels = () => {
-    SceneLoader.ImportMeshAsync('', 'https://assets.babylonjs.com/meshes/both_houses_scene.babylon').then(result => {
-      const mesh = result.meshes[0];
-    });
+    let assetManager = new BABYLON.AssetsManager(scene);
+    let model = assetManager.addMeshTask("model", "", "https://raw.githubusercontent.com/FadParatlas/paratlas-website/master/public/assets/", "test.obj");
+ 
+    model.onSuccess = function(t){
+        t.loadedMeshes[0].position = BABYLON.Vector3.Zero();
+    }
+
+    model.onError = function(t, message, exception){
+      console.error(message, exception);
+  }
+
+  assetManager.load();
+
   }
 
   /**
