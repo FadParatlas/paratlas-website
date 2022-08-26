@@ -11,6 +11,7 @@ var boxMesh;
 var startingPoint;
 var currentMesh;
 var ground;
+var canv;
 
 class BabylonScene extends Component {
 
@@ -25,12 +26,14 @@ class BabylonScene extends Component {
 
     scene = new BABYLON.Scene(this.engine);
 
+    canv = this.canvas;
+
     this.addLight();
 
     //--Camera---
     this.addCamera();
 
-    this.addExternalModels();
+    this.addMesh();
 
     //--Ground---
     this.addGround();
@@ -103,19 +106,17 @@ class BabylonScene extends Component {
   }
     var pointerDown = function (mesh) {
       currentMesh = mesh;
-      console.log(mesh);
       startingPoint = getGroundPosition();
       if (startingPoint) { // we need to disconnect camera from canvas
         setTimeout(function () {
-          console.log("aaaa");
-          camera.detachControl(this.canvas);
+          camera.detachControl(canv);
         }, 0);
       }
     }
 
     var pointerUp = function () {
       if (startingPoint) {
-        camera.attachControl(this.canvas, true);
+        camera.attachControl(canv, true);
         startingPoint = null;
         return;
       }
@@ -156,6 +157,11 @@ class BabylonScene extends Component {
   changeSkybox = () => {
     scene.clearColor = new BABYLON.Color3(0, 0, 0);
   }
+
+  addMesh = () => {
+    var box = BABYLON.MeshBuilder.CreateBox( "testBox", {size:1}, scene)
+  };
+
   addGround = () => {
     // Create a built-in "ground" shape.
     ground = BABYLON.MeshBuilder.CreateGround(
