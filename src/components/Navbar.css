@@ -1,6 +1,6 @@
 .navbar {
-  background: linear-gradient(to left,  #152238, #23395d);
-    height: 100px;
+  background: linear-gradient(to left,  #1f1f1f73, #5a5a5a4f);
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,8 +116,8 @@
     }
   
     .navbar-logo {
-      position: absolute;
-      top: 0;
+      position: absolute ;
+      top: 15px;
       left: 0;
       transform: translate(25%, 50%);
     }

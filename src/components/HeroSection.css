@@ -23,9 +23,11 @@
 
   .hero-container > h1 {
     color: #fff;
-    position: fixed;
-    font-size: 100px;
-    margin-top: -600px;
+    position: static;
+    max-width: 1000px;
+    font-size: 72px;
+    text-align: center;
+    margin-top: -500px;
     z-index: 2;
   }
   
@@ -57,26 +59,38 @@
   @media screen and (max-width: 960px) {
     .hero-container > h1 {
       font-size: 70px;
-      margin-top: -150px;
+      margin-top: -250px;
+    }
+
+    .hero-container > p {
+      font-size: 30px;
+      margin-top: -100px;
+    }
+
+    .hero-btns .btn {
+      margin-top: 100px;
     }
   }
   
   @media screen and (max-width: 768px) {
     .hero-container > h1 {
       font-size: 50px;
-      margin-top: -100px;
+      margin-top: -350px;
     }
   
     .hero-container > p {
       font-size: 30px;
+      margin-top: -200px;
     }
   
     .btn-mobile {
+      margin-top: -90px;
       display: block;
       text-decoration: none;
     }
   
     .btn {
       width: 100%;
+      
     }
   }

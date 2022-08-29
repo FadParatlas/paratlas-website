@@ -7,8 +7,7 @@ import Babylonapp from '../Babylon/Babylonapp';
 function HeroSection() {
   return (
     <div className='hero-container'>
-      <h1>Lucas 10 inch cock</h1>
-      <p>smd</p>
+      <h1>Create interactive visuals with no code</h1>
       <div className='hero-btns'>
         <Button
           className='btns'
