@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as ReactDOM from 'react-dom';
 import * as BABYLON from "@babylonjs/core";
 import '@babylonjs/loaders';
 import { SceneLoader } from '@babylonjs/core/Loading';
@@ -91,19 +92,53 @@ class BabylonScene extends Component {
     camera.angularSensibilityY = 250;
 
     // This attaches the camera to the canvas
-    camera.attachControl(this.canvas, true);
+    camera.attachControl(this.canvas, false);
     camera.setPosition(new BABYLON.Vector3(5, 5, 5));
+
+    var animationcamera = new BABYLON.Animation(
+      "myAnimationcamera",
+      "position",
+      30,
+      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    var keys = [];
+
+    keys.push({
+      frame: 0,
+      value: camera.position.clone(),
+      // outTangent: new BABYLON.Vector3(1, 0, 0)
+    });
+
+    keys.push({
+      frame: 50,
+      value: new BABYLON.Vector3(-400, 85, 5),
+    });
+
+    keys.push({
+      frame: 100,
+      // inTangent: new BABYLON.Vector3(-1, 0, 0),
+      value: camera.position.clone(),
+    });
+
+    animationcamera.setKeys(keys);
+
+    camera.animations = [];
+    camera.animations.push(animationcamera);
+
+    var animatable = scene.beginAnimation(camera, 0, 100, false);
   };
 
   addInteractivity = () => {
     var getGroundPosition = function () {
       var pickinfo = scene.pick(scene.pointerX, scene.pointerY, function (mesh) { return mesh == ground; });
       if (pickinfo.hit) {
-          return pickinfo.pickedPoint;
+        return pickinfo.pickedPoint;
       }
 
       return null;
-  }
+    }
     var pointerDown = function (mesh) {
       currentMesh = mesh;
       startingPoint = getGroundPosition();
@@ -141,7 +176,7 @@ class BabylonScene extends Component {
     scene.onPointerObservable.add((pointerInfo) => {
       switch (pointerInfo.type) {
         case BABYLON.PointerEventTypes.POINTERDOWN:
-          if (pointerInfo.pickInfo.hit && pointerInfo.pickInfo.pickedMesh != ground) {
+          if (pointerInfo.pickInfo.hit && pointerInfo.pickInfo.pickedMesh !== ground) {
             pointerDown(pointerInfo.pickInfo.pickedMesh)
           }
           break;
@@ -159,7 +194,33 @@ class BabylonScene extends Component {
   }
 
   addMesh = () => {
-    var box = BABYLON.MeshBuilder.CreateBox( "testBox", {size:1}, scene)
+    var box = BABYLON.MeshBuilder.CreateBox("testBox", { size: 1 }, scene)
+
+    const frameRate = 10;
+
+    const xSlide = new BABYLON.Animation("xSlide", "position.x", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+    const keyFrames = [];
+
+    keyFrames.push({
+      frame: 0,
+      value: 2,
+    });
+
+    keyFrames.push({
+      frame: frameRate,
+      value: -2,
+    });
+
+    keyFrames.push({
+      frame: 2 * frameRate,
+      value: 2,
+    });
+
+    xSlide.setKeys(keyFrames);
+
+    box.animations.push(xSlide);
+    scene.beginAnimation(box, 0, 2 * frameRate, true);
   };
 
   addGround = () => {
@@ -173,7 +234,7 @@ class BabylonScene extends Component {
     var groundMat = new BABYLON.StandardMaterial("ground", scene);
     groundMat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
     groundMat.specularColor = new BABYLON.Color3(0.4, 0.4, 0.4);
-    groundMat.emissiveColor = BABYLON.Color3.Purple();
+    groundMat.emissiveColor = BABYLON.Color3.Black();
     ground.material = groundMat;
   };
 
