@@ -1,0 +1,47 @@
+2022-08-29T06:32:41.506Z [INFO]: # Cloning repository: git@github.com:FadParatlas/paratlas-website.git
+2022-08-29T06:32:44.317Z [INFO]: Cloning into 'paratlas-website'...
+2022-08-29T06:32:44.318Z [INFO]: # Switching to commit: 20fca71f92ff57ebba84a13b41bf4173dcbb1445
+2022-08-29T06:32:44.592Z [INFO]: Note: switching to '20fca71f92ff57ebba84a13b41bf4173dcbb1445'.
+                                 You are in 'detached HEAD' state. You can look around, make experimental
+                                 changes and commit them, and you can discard any commits you make in this
+                                 state without impacting any branches by switching back to a branch.
+                                 If you want to create a new branch to retain commits you create, you may
+                                 do so (now or later) by using -c with the switch command. Example:
+                                 git switch -c <new-branch-name>
+                                 Or undo this operation with:
+                                 git switch -
+                                 Turn off this advice by setting config variable advice.detachedHead to false
+                                 HEAD is now at 20fca71 temp test
+2022-08-29T06:32:44.640Z [INFO]: Successfully cleaned up Git credentials
+2022-08-29T06:32:44.640Z [INFO]: # Checking for Git submodules at: /codebuild/output/src196390167/src/paratlas-website/.gitmodules
+2022-08-29T06:32:44.670Z [INFO]: # Retrieving environment cache...
+2022-08-29T06:32:45.138Z [INFO]: # Retrieved environment cache
+2022-08-29T06:32:45.138Z [INFO]: ---- Setting Up SSM Secrets ----
+2022-08-29T06:32:45.138Z [INFO]: SSM params {"Path":"/amplify/d2un1ng02am265/master/","WithDecryption":true}
+2022-08-29T06:32:45.166Z [WARNING]: !Failed to set up process.env.secrets
+2022-08-29T06:32:45.168Z [INFO]: No live updates for this build run
+2022-08-29T06:32:45.173Z [INFO]: # Retrieving cache...
+2022-08-29T06:32:48.136Z [INFO]: # Extracting cache...
+2022-08-29T06:32:55.049Z [INFO]: # Extraction completed
+2022-08-29T06:33:41.884Z [INFO]: ## Starting Backend Build
+                                 ## Checking for associated backend environment...
+                                 ## No backend environment association found, continuing...
+                                 ## Completed Backend Build
+2022-08-29T06:33:41.888Z [INFO]: ## Starting Frontend Build
+                                 # Starting phase: preBuild
+                                 # Executing command: npm ci
+2022-08-29T06:33:48.160Z [WARNING]: npm
+2022-08-29T06:33:48.163Z [WARNING]: WARN prepare removing existing node_modules/ before installation
+2022-08-29T06:33:50.240Z [WARNING]: npm ERR!
+2022-08-29T06:33:50.242Z [WARNING]: node-pre-gyp not accessible from fsevents
+2022-08-29T06:33:50.245Z [WARNING]: 
+2022-08-29T06:33:50.245Z [WARNING]: npm ERR! A complete log of this run can be found in:
+                                    npm ERR!     /root/.npm/_logs/2022-08-29T06_33_50_241Z-debug.log
+2022-08-29T06:33:50.245Z [HELP]: Outputting the npm debug log
+                                 [object Promise]
+2022-08-29T06:33:50.253Z [ERROR]: !!! Build failed
+2022-08-29T06:33:50.253Z [ERROR]: !!! Non-Zero Exit Code detected
+2022-08-29T06:33:50.253Z [INFO]: # Starting environment caching...
+2022-08-29T06:33:50.253Z [INFO]: # Uploading environment cache artifact...
+2022-08-29T06:33:50.324Z [INFO]: # Environment caching completed
+Terminating logging...

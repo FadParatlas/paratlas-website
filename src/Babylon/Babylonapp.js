@@ -113,7 +113,7 @@ class BabylonScene extends Component {
 
     keys.push({
       frame: 50,
-      value: new BABYLON.Vector3(-400, 85, 5),
+      value: new BABYLON.Vector3(-100, 85, 5),
     });
 
     keys.push({
@@ -127,7 +127,37 @@ class BabylonScene extends Component {
     camera.animations = [];
     camera.animations.push(animationcamera);
 
-    var animatable = scene.beginAnimation(camera, 0, 100, false);
+    // var animatable = scene.beginAnimation(camera, 0, 100, false);
+
+    let j = 0;
+
+    window.addEventListener('wheel', function (event) {
+      if (event.deltaY < 0) {
+        var animatable = scene.beginAnimation(camera, j + 1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j > 0) {
+          j--;
+        } else {
+          return;
+        }
+        console.log(j);
+      }
+      else if (event.deltaY > 0) {
+        var animatable = scene.beginAnimation(camera, j - 1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j <= 100) {
+          j++;
+        } else {
+          j = 0;
+        }
+        console.log(j);
+      }
+    });
+    // window.onmousewheelDown = () => {
+
+    // };
   };
 
   addInteractivity = () => {
