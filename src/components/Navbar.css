@@ -1,16 +1,12 @@
 .navbar {
-  background: #242424;
-  border-radius: 25px;
-  padding: 20px;
-  margin: auto;
-  width: 80%;
-    height: 70%;
+  background: linear-gradient(to left,  #152238, #23395d);
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
     position: sticky;
-    top: 10px;
+    top: 0;
     z-index: 999;
   }
   
