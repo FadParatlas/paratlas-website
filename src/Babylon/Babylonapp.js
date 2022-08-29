@@ -113,11 +113,23 @@ class BabylonScene extends Component {
 
     keys.push({
       frame: 50,
-      value: new BABYLON.Vector3(-30, 85, 5),
+      value: new BABYLON.Vector3(50, 50, 50),
     });
 
     keys.push({
       frame: 100,
+      // inTangent: new BABYLON.Vector3(-1, 0, 0),
+      value: camera.position.clone(),
+    });
+
+    keys.push({
+      frame: 150,
+      // inTangent: new BABYLON.Vector3(-1, 0, 0),
+      value: new BABYLON.Vector3(-50, 50, -50),
+    });
+
+    keys.push({
+      frame: 200,
       // inTangent: new BABYLON.Vector3(-1, 0, 0),
       value: camera.position.clone(),
     });
@@ -147,7 +159,7 @@ class BabylonScene extends Component {
         var animatable = scene.beginAnimation(camera, j - 1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
-        if (j <= 100) {
+        if (j < 200) {
           j++;
         } else {
           j = 0;
@@ -225,29 +237,38 @@ class BabylonScene extends Component {
 
     const frameRate = 10;
 
-    const xSlide = new BABYLON.Animation("xSlide", "position.x", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    const xSlide = new BABYLON.Animation("Slide", "position", frameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 
     const keyFrames = [];
 
     keyFrames.push({
       frame: 0,
-      value: 2,
+      value: box.position.clone(),
     });
 
     keyFrames.push({
       frame: frameRate,
-      value: -2,
+      value: new BABYLON.Vector3(0,0,5),
     });
 
     keyFrames.push({
       frame: 2 * frameRate,
-      value: 2,
+      value: new BABYLON.Vector3(0,0,-5),
+    });
+
+    keyFrames.push({
+      frame: 4 * frameRate,
+      value: new BABYLON.Vector3(-5,0,-5),
+    });
+    keyFrames.push({
+      frame: 6 * frameRate,
+      value: box.position.clone(),
     });
 
     xSlide.setKeys(keyFrames);
 
     box.animations.push(xSlide);
-    scene.beginAnimation(box, 0, 2 * frameRate, true);
+    scene.beginAnimation(box, 0, 6 * frameRate, true);
   };
 
   addGround = () => {
