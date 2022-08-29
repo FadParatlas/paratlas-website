@@ -113,7 +113,7 @@ class BabylonScene extends Component {
 
     keys.push({
       frame: 50,
-      value: new BABYLON.Vector3(-100, 85, 5),
+      value: new BABYLON.Vector3(-30, 85, 5),
     });
 
     keys.push({
@@ -155,9 +155,6 @@ class BabylonScene extends Component {
         console.log(j);
       }
     });
-    // window.onmousewheelDown = () => {
-
-    // };
   };
 
   addInteractivity = () => {
