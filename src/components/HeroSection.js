@@ -1,10 +1,12 @@
 import React from 'react';
+import { useEffect } from 'react';
 import '../App.css';
 import { Button } from './Button';
 import './HeroSection.css';
 import Babylonapp from '../Babylon/Babylonapp';
 
 function HeroSection() {
+
   return (
     <div className='hero-container'>
       <h1>Create interactive visuals with no code</h1>
@@ -26,7 +28,7 @@ function HeroSection() {
         </Button>
       </div>
       <div className='babylon-app'>
-      <Babylonapp/>
+        <Babylonapp />
       </div>
     </div>
   );

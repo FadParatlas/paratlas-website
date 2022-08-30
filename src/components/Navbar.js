@@ -29,8 +29,7 @@ function Navbar() {
       <nav className='navbar'>
         <div className='navbar-container'>
           <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-            PARATLAS
-            <img src = "../public/logo192.png"/>
+            <img src = "https://dl.dropbox.com/s/rs35l4uwu0q58d7/LOgo.png" width={"70"} height={"40"} alt = "aaaa"/>
           </Link>
           <div className='menu-icon' onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />

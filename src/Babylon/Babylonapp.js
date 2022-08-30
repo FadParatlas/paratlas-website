@@ -44,7 +44,7 @@ class BabylonScene extends Component {
     window.addEventListener("resize", this.onWindowResize, false);
 
     // Render Loop
-    this.engine.runRenderLoop(() => {
+    this.engine.runRenderLoop(function() {
       scene.render();
     });
 
@@ -53,10 +53,17 @@ class BabylonScene extends Component {
   componentWillUnmount() {
     window.removeEventListener("resize", this.onWindowResize, false);
   }
+  windowResizeListener = () => {
+    let windowW, windowH;
+    windowW = window.innerWidth;
+    windowH = window.innerHeight;
+    console.log("listener : " + windowW + " , " + windowH);
+  }
 
   onWindowResize = event => {
     this.engine.resize();
-    console.log("Aaaaa");
+    console.log(canv.size);
+    this.windowResizeListener();
   };
 
   addExternalModels = () => {
@@ -79,58 +86,49 @@ class BabylonScene extends Component {
 
   addCamera = () => {
     // ---------------ArcRotateCamera or Orbit Control----------
-    camera = new BABYLON.ArcRotateCamera(
-      "Camera",
-      Math.PI / 2,
-      Math.PI / 4,
-      4,
-      BABYLON.Vector3.Zero(),
-      scene
-    );
+    var camera = new BABYLON.FlyCamera("UniversalCamera", new BABYLON.Vector3(0, 0, -10), scene);
     camera.inertia = 0;
-    camera.angularSensibilityX = 250;
-    camera.angularSensibilityY = 250;
+    camera.setTarget(BABYLON.Vector3.Zero());
+    // camera.angularSensibilityX = 250;
+    // camera.angularSensibilityY = 250;
 
     // This attaches the camera to the canvas
-    camera.attachControl(this.canvas, false);
-    camera.setPosition(new BABYLON.Vector3(5, 5, 5));
+    // camera.attachControl(this.canvas, false);
+
+    const frameRate = 10;
 
     var animationcamera = new BABYLON.Animation(
       "myAnimationcamera",
       "position",
-      30,
+      frameRate,
       BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
       BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
 
     var keys = [];
 
+
     keys.push({
       frame: 0,
       value: camera.position.clone(),
-      // outTangent: new BABYLON.Vector3(1, 0, 0)
     });
 
     keys.push({
-      frame: 50,
-      value: new BABYLON.Vector3(50, 50, 50),
+      frame: frameRate,
+      value: new BABYLON.Vector3(0,10,5),
     });
 
     keys.push({
-      frame: 100,
-      // inTangent: new BABYLON.Vector3(-1, 0, 0),
-      value: camera.position.clone(),
+      frame: 2 * frameRate,
+      value: new BABYLON.Vector3(0,10,-5),
     });
 
     keys.push({
-      frame: 150,
-      // inTangent: new BABYLON.Vector3(-1, 0, 0),
-      value: new BABYLON.Vector3(-50, 50, -50),
+      frame: 4 * frameRate,
+      value: new BABYLON.Vector3(-5,10,-10),
     });
-
     keys.push({
-      frame: 200,
-      // inTangent: new BABYLON.Vector3(-1, 0, 0),
+      frame: 6 * frameRate,
       value: camera.position.clone(),
     });
 
@@ -151,7 +149,7 @@ class BabylonScene extends Component {
         if (j > 0) {
           j--;
         } else {
-          return;
+          j = 60;
         }
         console.log(j);
       }
@@ -159,7 +157,7 @@ class BabylonScene extends Component {
         var animatable = scene.beginAnimation(camera, j - 1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
-        if (j < 200) {
+        if (j < 60) {
           j++;
         } else {
           j = 0;
@@ -183,14 +181,14 @@ class BabylonScene extends Component {
       startingPoint = getGroundPosition();
       if (startingPoint) { // we need to disconnect camera from canvas
         setTimeout(function () {
-          camera.detachControl(canv);
+          // camera.detachControl(canv);
         }, 0);
       }
     }
 
     var pointerUp = function () {
       if (startingPoint) {
-        camera.attachControl(canv, true);
+        // camera.attachControl(canv, true);
         startingPoint = null;
         return;
       }
@@ -235,47 +233,47 @@ class BabylonScene extends Component {
   addMesh = () => {
     var box = BABYLON.MeshBuilder.CreateBox("testBox", { size: 1 }, scene)
 
-    const frameRate = 10;
+    // const frameRate = 10;
 
-    const xSlide = new BABYLON.Animation("Slide", "position", frameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    // const xSlide = new BABYLON.Animation("Slide", "position", frameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 
-    const keyFrames = [];
+    // const keyFrames = [];
 
-    keyFrames.push({
-      frame: 0,
-      value: box.position.clone(),
-    });
+    // keyFrames.push({
+    //   frame: 0,
+    //   value: box.position.clone(),
+    // });
 
-    keyFrames.push({
-      frame: frameRate,
-      value: new BABYLON.Vector3(0,0,5),
-    });
+    // keyFrames.push({
+    //   frame: frameRate,
+    //   value: new BABYLON.Vector3(0,0,5),
+    // });
 
-    keyFrames.push({
-      frame: 2 * frameRate,
-      value: new BABYLON.Vector3(0,0,-5),
-    });
+    // keyFrames.push({
+    //   frame: 2 * frameRate,
+    //   value: new BABYLON.Vector3(0,0,-5),
+    // });
 
-    keyFrames.push({
-      frame: 4 * frameRate,
-      value: new BABYLON.Vector3(-5,0,-5),
-    });
-    keyFrames.push({
-      frame: 6 * frameRate,
-      value: box.position.clone(),
-    });
+    // keyFrames.push({
+    //   frame: 4 * frameRate,
+    //   value: new BABYLON.Vector3(-5,0,-10),
+    // });
+    // keyFrames.push({
+    //   frame: 6 * frameRate,
+    //   value: box.position.clone(),
+    // });
 
-    xSlide.setKeys(keyFrames);
+    // xSlide.setKeys(keyFrames);
 
-    box.animations.push(xSlide);
-    scene.beginAnimation(box, 0, 6 * frameRate, true);
+    // box.animations.push(xSlide);
+    // scene.beginAnimation(box, 0, 6 * frameRate, true);
   };
 
   addGround = () => {
     // Create a built-in "ground" shape.
     ground = BABYLON.MeshBuilder.CreateGround(
       "ground1",
-      { height: 6, width: 6, subdivisions: 2 },
+      { height: 100, width: 100, subdivisions: 2 },
       scene
     );
 
@@ -289,7 +287,7 @@ class BabylonScene extends Component {
   render() {
     return (
       <canvas
-        style={{ width: window.innerWidth, height: window.innerHeight }}
+        style={{ width: "100%", height: "100%" }}
         ref={canvas => {
           this.canvas = canvas;
         }}
