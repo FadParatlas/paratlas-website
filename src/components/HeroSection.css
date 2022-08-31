@@ -27,7 +27,7 @@
     max-width: 1000px;
     font-size: 36px;
     text-align: center;
-    margin-top: -700px;
+    margin-top: -500px;
     font-family: 'Poppins', sans-serif;
     overflow: hidden;
     z-index: 2;
@@ -85,7 +85,7 @@
     }
 
     .hero-btns .btn {
-      margin-top: 100px;
+      margin-top: 50px;
     }
   }
   
@@ -102,13 +102,12 @@
     }
   
     .btn-mobile {
-      margin-top: -90px;
+      margin-top: -50px;
       display: block;
       text-decoration: none;
     }
   
     .btn {
       width: 100%;
-
     }
   }

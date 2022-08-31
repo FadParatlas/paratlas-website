@@ -8,7 +8,6 @@ console.log(SceneLoader.IsPluginForExtensionAvailable('.obj'));
 
 var scene;
 var camera;
-var boxMesh;
 var startingPoint;
 var currentMesh;
 var ground;
@@ -33,11 +32,13 @@ class BabylonScene extends Component {
 
     //--Camera---
     this.addCamera();
+    this.handleCameraAnimations();
 
-    this.addMesh();
+    // this.addMesh();
+    this.addExternalModels();
 
     //--Ground---
-    this.addGround();
+    // this.addGround();
     this.changeSkybox();
     this.addInteractivity();
     // Add Events
@@ -68,9 +69,9 @@ class BabylonScene extends Component {
 
   addExternalModels = () => {
     BABYLON.SceneLoader.ImportMesh("",
-      "https://dl.dropbox.com/s/z3u4yheu9fcdfd2/", "an_animated_cat.glb?", scene, function (meshes) {
+      "https://dl.dropbox.com/s/dlo7ymmaz93t8l3/The_Atelier.glb?", "an_animated_cat.glb?", scene, function (meshes) {
         var cat = meshes[0];
-        cat.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
+        cat.scaling = new BABYLON.Vector3(1, 1, 1);
       });
 
   }
@@ -79,24 +80,21 @@ class BabylonScene extends Component {
     // Create a basic light, aiming 0,1,0 - meaning, to the sky.
     var light = new BABYLON.HemisphericLight(
       "light1",
-      new BABYLON.Vector3(0, 10, 0),
+      new BABYLON.Vector3(0, 100, 0),
       scene
     );
   };
 
   addCamera = () => {
     // ---------------ArcRotateCamera or Orbit Control----------
-    var camera = new BABYLON.FlyCamera("UniversalCamera", new BABYLON.Vector3(0, 0, -10), scene);
+    camera = new BABYLON.FlyCamera("UniversalCamera", new BABYLON.Vector3(-1, 1.5, -10), scene);
     camera.inertia = 0;
-    camera.setTarget(BABYLON.Vector3.Zero());
-    // camera.angularSensibilityX = 250;
-    // camera.angularSensibilityY = 250;
+  };
 
-    // This attaches the camera to the canvas
-    // camera.attachControl(this.canvas, false);
-
+  handleCameraAnimations = () => {
     const frameRate = 10;
-
+    const frameRateMax = 600;
+    //handle position
     var animationcamera = new BABYLON.Animation(
       "myAnimationcamera",
       "position",
@@ -114,28 +112,40 @@ class BabylonScene extends Component {
     });
 
     keys.push({
-      frame: frameRate,
-      value: new BABYLON.Vector3(0,10,5),
-    });
-
-    keys.push({
-      frame: 2 * frameRate,
-      value: new BABYLON.Vector3(0,10,-5),
-    });
-
-    keys.push({
-      frame: 4 * frameRate,
-      value: new BABYLON.Vector3(-5,10,-10),
-    });
-    keys.push({
-      frame: 6 * frameRate,
-      value: camera.position.clone(),
+      frame: 100,
+      value: new BABYLON.Vector3(-1,1.5,10),
     });
 
     animationcamera.setKeys(keys);
 
     camera.animations = [];
     camera.animations.push(animationcamera);
+
+    //Handle Rotation
+    var rotationcam = new BABYLON.Animation(
+      "rotcamera",
+      "rotation",
+      frameRate,
+      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    var keyr = [];
+
+    keyr.push({
+      frame: 0,
+      value: camera.rotation.clone(),
+    });
+
+    keyr.push({
+      frame: 100,
+      value: new BABYLON.Vector3(0,0,20),
+    })
+
+    rotationcam.setKeys(keys);
+
+    camera.animations = [];
+    camera.animations.push(rotationcam);
 
     // var animatable = scene.beginAnimation(camera, 0, 100, false);
 
@@ -146,10 +156,11 @@ class BabylonScene extends Component {
         var animatable = scene.beginAnimation(camera, j + 1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
+        console.log(camera.rotation);
         if (j > 0) {
           j--;
         } else {
-          j = 60;
+          j = 100;
         }
         console.log(j);
       }
@@ -157,6 +168,7 @@ class BabylonScene extends Component {
         var animatable = scene.beginAnimation(camera, j - 1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
+        console.log(camera.rotation);
         if (j < 60) {
           j++;
         } else {
@@ -165,6 +177,7 @@ class BabylonScene extends Component {
         console.log(j);
       }
     });
+
   };
 
   addInteractivity = () => {
@@ -269,20 +282,20 @@ class BabylonScene extends Component {
     // scene.beginAnimation(box, 0, 6 * frameRate, true);
   };
 
-  addGround = () => {
-    // Create a built-in "ground" shape.
-    ground = BABYLON.MeshBuilder.CreateGround(
-      "ground1",
-      { height: 100, width: 100, subdivisions: 2 },
-      scene
-    );
+  // addGround = () => {
+  //   // Create a built-in "ground" shape.
+  //   ground = BABYLON.MeshBuilder.CreateGround(
+  //     "ground1",
+  //     { height: 100, width: 100, subdivisions: 2 },
+  //     scene
+  //   );
 
-    var groundMat = new BABYLON.StandardMaterial("ground", scene);
-    groundMat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
-    groundMat.specularColor = new BABYLON.Color3(0.4, 0.4, 0.4);
-    groundMat.emissiveColor = BABYLON.Color3.Black();
-    ground.material = groundMat;
-  };
+  //   var groundMat = new BABYLON.StandardMaterial("ground", scene);
+  //   groundMat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+  //   groundMat.specularColor = new BABYLON.Color3(0.4, 0.4, 0.4);
+  //   groundMat.emissiveColor = BABYLON.Color3.Black();
+  //   ground.material = groundMat;
+  // };
 
   render() {
     return (
