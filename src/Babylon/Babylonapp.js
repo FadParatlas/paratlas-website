@@ -108,25 +108,27 @@ class BabylonScene extends Component {
 
     keys.push({
       frame: 0,
-      value: camera.position.clone(),
+      value: camera.position.clone(), 
     });
 
     keys.push({
       frame: 100,
-      value: new BABYLON.Vector3(-1,1.5,10),
+      value: new BABYLON.Vector3(-1.1,1.5,2.5),
     });
 
-    animationcamera.setKeys(keys);
+    keys.push({
+      frame:150,
+      value: new BABYLON.Vector3(1,1.5,2.5),
+    })
 
-    // camera.animations = [];
-    // camera.animations.push(animationcamera);
+    animationcamera.setKeys(keys);
 
     //Handle Rotation
     var rotationcam = new BABYLON.Animation(
       "rotcamera",
-      "rotation",
+      "rotation.y",
       frameRate,
-      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+      BABYLON.Animation.ANIMATIONTYPE_FLOAT,
       BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
 
@@ -134,12 +136,17 @@ class BabylonScene extends Component {
 
     keyr.push({
       frame: 0,
-      value: camera.rotation.clone(),
+      value: 0,
     });
 
     keyr.push({
-      frame: 100,
-      value: new BABYLON.Vector3(0,20,0),
+      frame: 80,
+      value: 0,
+    })
+
+    keyr.push({
+      frame:100,
+      value: Math.PI/2
     })
 
     rotationcam.setKeys(keyr);
@@ -156,20 +163,21 @@ class BabylonScene extends Component {
         var animatable = scene.beginDirectAnimation(camera,[rotationcam,animationcamera],j + 1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
-        console.log(camera.rotation);
+        console.log(camera.position);
         if (j > 0) {
           j--;
         } else {
-          j = 100;
+          j = 150;
         }
         console.log(j);
       }
       else if (event.deltaY > 0) {
-        var animatable = scene.beginAnimation(camera, j - 1, j, false);
+        var animatable = scene.beginDirectAnimation(camera,[rotationcam,animationcamera],j -
+           1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
-        console.log(camera.rotation);
-        if (j < 60) {
+        console.log(camera.position);
+        if (j < 150) {
           j++;
         } else {
           j = 0;
@@ -240,7 +248,7 @@ class BabylonScene extends Component {
     });
   }
   changeSkybox = () => {
-    scene.clearColor = new BABYLON.Color3(0, 0, 0);
+    scene.clearColor = new BABYLON.Color3(0.2,0.2,0.2);
   }
 
   addMesh = () => {

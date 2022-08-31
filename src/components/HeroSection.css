@@ -29,6 +29,7 @@
     text-align: center;
     margin-top: -500px;
     font-family: 'Poppins', sans-serif;
+    font-weight: 80;
     overflow: hidden;
     z-index: 2;
   }
