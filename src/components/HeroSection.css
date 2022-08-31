@@ -14,7 +14,7 @@
   .hero-container > .babylon-app {
     object-fit: fill;
     width: 100vw;
-    height: 50vh;    
+    height: 100vh;    
     position: fixed;
     top: 0px;
     z-index: 1;
@@ -25,40 +25,57 @@
     color: #fff;
     position: static;
     max-width: 1000px;
-    font-size: 72px;
+    font-size: 36px;
     text-align: center;
-    margin-top: -500px;
+    margin-top: -700px;
     font-family: 'Poppins', sans-serif;
+    overflow: hidden;
     z-index: 2;
   }
   
   .hero-container > p {
     margin-top: -350px;
-    position: fixed;
+    position: static;
     color: #fff;
     font-size: 32px;
     font-family: 'Poppins', sans-serif;
       z-index: 3;
   }
+
   
   .hero-btns {
-    margin-top: 0px;
+    margin-top: 50px;
     z-index: 4;
-    position: fixed;
+    position: static;
   }
   
   .hero-btns .btn {
     margin: 6px;
+    color:gray;
     pointer-events: auto;
   }
   
   .fa-play-circle {
     margin-left: 4px;
   }
+  @media screen and (max-height: 700px) {
+    .hero-container > h1 {
+      font-size: 30px;
+      margin-top: -100px;
+    }
+  
+    .hero-container > p {
+      font-size: 30px;
+      margin-top: -200px;
+    }
+    .btn-mobile {
+      margin-top: 40px;
+    }
+  }
   
   @media screen and (max-width: 960px) {
     .hero-container > h1 {
-      font-size: 70px;
+      font-size: 32px;
       margin-top: -250px;
     }
 
@@ -74,8 +91,9 @@
   
   @media screen and (max-width: 768px) {
     .hero-container > h1 {
-      font-size: 50px;
+      font-size: 30px;
       margin-top: -350px;
+      max-width: 400px;
     }
   
     .hero-container > p {
@@ -91,6 +109,6 @@
   
     .btn {
       width: 100%;
-      
+
     }
   }

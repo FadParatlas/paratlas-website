@@ -24,7 +24,7 @@ function HeroSection() {
           buttonSize='btn--large'
           onClick={console.log('hey')}
         >
-          Play Game <i className='far fa-play-circle' />
+          Try it out <i className='far fa-play-circle' />
         </Button>
       </div>
       <div className='babylon-app'>
