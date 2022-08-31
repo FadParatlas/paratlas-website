@@ -118,8 +118,8 @@ class BabylonScene extends Component {
 
     animationcamera.setKeys(keys);
 
-    camera.animations = [];
-    camera.animations.push(animationcamera);
+    // camera.animations = [];
+    // camera.animations.push(animationcamera);
 
     //Handle Rotation
     var rotationcam = new BABYLON.Animation(
@@ -139,13 +139,13 @@ class BabylonScene extends Component {
 
     keyr.push({
       frame: 100,
-      value: new BABYLON.Vector3(0,0,20),
+      value: new BABYLON.Vector3(0,20,0),
     })
 
-    rotationcam.setKeys(keys);
+    rotationcam.setKeys(keyr);
 
     camera.animations = [];
-    camera.animations.push(rotationcam);
+    // camera.animations.push(rotationcam);
 
     // var animatable = scene.beginAnimation(camera, 0, 100, false);
 
@@ -153,7 +153,7 @@ class BabylonScene extends Component {
 
     window.addEventListener('wheel', function (event) {
       if (event.deltaY < 0) {
-        var animatable = scene.beginAnimation(camera, j + 1, j, false);
+        var animatable = scene.beginDirectAnimation(camera,[rotationcam,animationcamera],j + 1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
         console.log(camera.rotation);
