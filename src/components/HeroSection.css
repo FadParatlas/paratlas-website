@@ -1,114 +1,130 @@
+.hero-container {
+  /* background: url('../images/img-home.jpg') center center/cover no-repeat;  */
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
+  object-fit: fill;
+  pointer-events: none;
+}
 
-  .hero-container {
-    /* background: url('../images/img-home.jpg') center center/cover no-repeat;  */
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
-    object-fit: fill;
-    pointer-events: none;
-  }
-  .hero-container > .babylon-app {
-    object-fit: fill;
-    width: 100vw;
-    height: 100vh;    
-    position: fixed;
-    top: 0px;
-    z-index: 1;
-    pointer-events: auto;
+.hero-container>.babylon-app {
+  object-fit: fill;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0px;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* .hero-container>h1 {
+  color: #fff;
+  position: relative;
+  top: -200px;
+  max-width: 1000px;
+  font-size: 36px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 80;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.hero-container>p {
+  margin-top: -350px;
+  position: relative;
+  color: #fff;
+  font-size: 32px;
+  font-family: 'Poppins', sans-serif;
+  z-index: 3;
+}
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20vh);
+  visibility: hidden;
+  transition: opacity 1200ms ease-out, transform 600ms ease-out,
+    visibility 1200ms ease-out;
+  will-change: opacity, transform, visibility;
+}
+
+.fade-in-section.is-visible {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+.hero-btns {
+  margin-top: 50px;
+  z-index: 4;
+  position: relative;
+}
+
+.hero-btns .btn {
+  margin: 6px;
+  color: gray;
+  pointer-events: auto;
+}
+
+.fa-play-circle {
+  margin-left: 4px;
+}
+
+@media screen and (max-height: 700px) {
+  .hero-container>h1 {
+    font-size: 30px;
+    margin-top: -100px;
   }
 
-  .hero-container > h1 {
-    color: #fff;
-    position: static;
-    max-width: 1000px;
-    font-size: 36px;
-    text-align: center;
-    margin-top: -500px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 80;
-    overflow: hidden;
-    z-index: 2;
+  .hero-container>p {
+    font-size: 30px;
+    margin-top: -200px;
   }
-  
-  .hero-container > p {
-    margin-top: -350px;
-    position: static;
-    color: #fff;
+
+  .btn-mobile {
+    margin-top: 40px;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .hero-container>h1 {
     font-size: 32px;
-    font-family: 'Poppins', sans-serif;
-      z-index: 3;
+    margin-top: -250px;
   }
 
-  
-  .hero-btns {
-    margin-top: 50px;
-    z-index: 4;
-    position: static;
+  .hero-container>p {
+    font-size: 30px;
+    margin-top: -100px;
   }
-  
+
   .hero-btns .btn {
-    margin: 6px;
-    color:gray;
-    pointer-events: auto;
+    margin-top: 50px;
   }
-  
-  .fa-play-circle {
-    margin-left: 4px;
-  }
-  @media screen and (max-height: 700px) {
-    .hero-container > h1 {
-      font-size: 30px;
-      margin-top: -100px;
-    }
-  
-    .hero-container > p {
-      font-size: 30px;
-      margin-top: -200px;
-    }
-    .btn-mobile {
-      margin-top: 40px;
-    }
-  }
-  
-  @media screen and (max-width: 960px) {
-    .hero-container > h1 {
-      font-size: 32px;
-      margin-top: -250px;
-    }
+}
 
-    .hero-container > p {
-      font-size: 30px;
-      margin-top: -100px;
-    }
+@media screen and (max-width: 768px) {
+  .hero-container>h1 {
+    font-size: 30px;
+    margin-top: -350px;
+    max-width: 400px;
+  }
 
-    .hero-btns .btn {
-      margin-top: 50px;
-    }
+  .hero-container>p {
+    font-size: 30px;
+    margin-top: -200px;
   }
-  
-  @media screen and (max-width: 768px) {
-    .hero-container > h1 {
-      font-size: 30px;
-      margin-top: -350px;
-      max-width: 400px;
-    }
-  
-    .hero-container > p {
-      font-size: 30px;
-      margin-top: -200px;
-    }
-  
-    .btn-mobile {
-      margin-top: -50px;
-      display: block;
-      text-decoration: none;
-    }
-  
-    .btn {
-      width: 100%;
-    }
+
+  .btn-mobile {
+    margin-top: -50px;
+    display: block;
+    text-decoration: none;
   }
+
+  .btn {
+    width: 100%;
+  }
+} */

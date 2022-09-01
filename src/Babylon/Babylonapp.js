@@ -158,7 +158,7 @@ class BabylonScene extends Component {
 
     let j = 0;
 
-    window.addEventListener('wheel', function (event) {
+    this.canvas.addEventListener('wheel', function (event) {
       if (event.deltaY < 0) {
         var animatable = scene.beginDirectAnimation(camera,[rotationcam,animationcamera],j + 1, j, false);
         animatable.goToFrame(j);
