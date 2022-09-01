@@ -1,0 +1,11 @@
+.home-content-wrapper{
+    align-items: center;
+}
+
+.home-content-wrapper > .hero-section {
+    height: 100vh;
+}
+
+.home-content-wrapper > .content-section {
+    height: 100vh;
+}

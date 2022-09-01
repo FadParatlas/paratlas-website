@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import * as ReactDOM from 'react-dom';
 import * as BABYLON from "@babylonjs/core";
 import '@babylonjs/loaders';
-import { SceneLoader } from '@babylonjs/core/Loading';
-
-console.log(SceneLoader.IsPluginForExtensionAvailable('.obj'));
 
 var scene;
 var camera;
@@ -45,7 +42,7 @@ class BabylonScene extends Component {
     window.addEventListener("resize", this.onWindowResize, false);
 
     // Render Loop
-    this.engine.runRenderLoop(function() {
+    this.engine.runRenderLoop(function () {
       scene.render();
     });
 
@@ -69,7 +66,7 @@ class BabylonScene extends Component {
 
   addExternalModels = () => {
     BABYLON.SceneLoader.ImportMesh("",
-      "https://dl.dropbox.com/s/dlo7ymmaz93t8l3/The_Atelier.glb?", "an_animated_cat.glb?", scene, function (meshes) {
+      "https://dl.dropbox.com/s/otf85vnoz8an32x/Expo%20%282%29.glb?", "an_animated_cat.glb?", scene, function (meshes) {
         var cat = meshes[0];
         cat.scaling = new BABYLON.Vector3(1, 1, 1);
       });
@@ -108,17 +105,17 @@ class BabylonScene extends Component {
 
     keys.push({
       frame: 0,
-      value: camera.position.clone(), 
+      value: camera.position.clone(),
     });
 
     keys.push({
       frame: 100,
-      value: new BABYLON.Vector3(-1.1,1.5,2.5),
+      value: new BABYLON.Vector3(-1.1, 1.5, 2.5),
     });
 
     keys.push({
-      frame:150,
-      value: new BABYLON.Vector3(1,1.5,2.5),
+      frame: 150,
+      value: new BABYLON.Vector3(1, 1.5, 2.5),
     })
 
     animationcamera.setKeys(keys);
@@ -145,8 +142,8 @@ class BabylonScene extends Component {
     })
 
     keyr.push({
-      frame:100,
-      value: Math.PI/2
+      frame: 100,
+      value: Math.PI / 2
     })
 
     rotationcam.setKeys(keyr);
@@ -157,32 +154,120 @@ class BabylonScene extends Component {
     // var animatable = scene.beginAnimation(camera, 0, 100, false);
 
     let j = 0;
+    var pctScrolled;
+    var winheight;
 
-    this.canvas.addEventListener('wheel', function (event) {
-      if (event.deltaY < 0) {
-        var animatable = scene.beginDirectAnimation(camera,[rotationcam,animationcamera],j + 1, j, false);
-        animatable.goToFrame(j);
-        animatable.pause();
-        console.log(camera.position);
-        if (j > 0) {
-          j--;
-        } else {
-          j = 150;
+    var winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
+
+    function getDocHeight() {
+      var D = document;
+      return Math.max(
+        D.body.scrollHeight, D.documentElement.scrollHeight,
+        D.body.offsetHeight, D.documentElement.offsetHeight,
+        D.body.clientHeight, D.documentElement.clientHeight
+      )
+    }
+
+    var docheight = getDocHeight()
+
+    function amountscrolled() {
+      winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
+      var docheight = getDocHeight()
+      var scrollTop = window.pageYOffset || (document.documentElement || document.body.parentNode || document.body).scrollTop
+      var trackLength = docheight - winheight
+      pctScrolled = Math.floor(scrollTop / trackLength * 100) // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
+      console.log(pctScrolled + '% scrolled')
+    }
+
+    function scrollDistance(callback, refresh = 66) {
+
+      // Make sure a valid callback was provided
+      if (!callback || typeof callback !== 'function') return;
+
+      // Variables
+      let isScrolling, start, end, distance;
+
+      // Listen for scroll events
+      window.addEventListener('scroll', function (event) {
+
+        // Set starting position
+        if (!start) {
+          start = window.pageYOffset;
         }
-        console.log(j);
+
+        // Clear our timeout throughout the scroll
+        window.clearTimeout(isScrolling);
+
+        // Set a timeout to run after scrolling ends
+        isScrolling = setTimeout(function () {
+
+          amountscrolled()
+
+          // Calculate distance
+          end = window.pageYOffset;
+          distance = end - start;
+
+          // Run the callback
+          callback(distance, start, end);
+
+          // Reset calculations
+          start = null;
+          end = null;
+          distance = null;
+
+        }, refresh);
+
+      }, false);
+
+    }
+    scrollDistance(function (distance) {
+      console.log('You travelled ' + parseInt(Math.abs(distance), 10) + 'px ' + (distance < 0 ? 'up' : 'down'));
+      var movementDelta = parseInt(Math.abs(distance), 10);
+      var frameDelta = movementDelta/winheight*150;
+      if(distance < 0) {
+        console.log(frameDelta);
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam,animationcamera],
+          j,j + (frameDelta), false)
+          // animatable.goToFrame(j -= frameDelta);
+          // animatable.pause();
+          console.log(j);
+          if (j > 0 ) {
+            j -= frameDelta;
+          }
+          else {
+            j = 150;
+          }
+
+      } else if (distance > 0) {
+        console.log(-movementDelta);
       }
+      else {
+        console.log("no distance");
+      }
+    });
+
+    window.addEventListener('wheel', function (event) {
+      if (event.deltaY < 0) {
+        // var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+        // animatable.goToFrame(j);
+        // animatable.pause();
+        // if (j > 0) {
+        //   j--;
+        // } else {
+        //   j = 150;
+        // }
+      }
+
       else if (event.deltaY > 0) {
-        var animatable = scene.beginDirectAnimation(camera,[rotationcam,animationcamera],j -
-           1, j, false);
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
+          1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
-        console.log(camera.position);
         if (j < 150) {
           j++;
         } else {
           j = 0;
         }
-        console.log(j);
       }
     });
 
@@ -248,7 +333,7 @@ class BabylonScene extends Component {
     });
   }
   changeSkybox = () => {
-    scene.clearColor = new BABYLON.Color3(0.2,0.2,0.2);
+    scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.2);
   }
 
   addMesh = () => {
@@ -316,4 +401,4 @@ class BabylonScene extends Component {
     );
   }
 }
-export default BabylonScene;
+export default BabylonScene; 

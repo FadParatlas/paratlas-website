@@ -1,30 +1,12 @@
 import React from 'react';
 import { useEffect } from 'react';
 import '../App.css';
-import { Button } from './Button';
+import { Button } from '../components/Button';
 import './HeroSection.css';
 import Babylonapp from '../Babylon/Babylonapp';
-import colors from './css-colors';
+import colors from '../components/css-colors';
 
-function FadeInSection(props) {
-  const [isVisible, setVisible] = React.useState(false);
-  const domRef = React.useRef();
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => setVisible(entry.isIntersecting));
-      console.log("Fade in");
-    });
-    observer.observe(domRef.current);
-  }, []);
-  return (
-    <div
-      className={`fade-in-section ${isVisible ? 'is-visible' : ''}`}
-      ref={domRef}
-    >
-      {props.children}
-    </div>
-  );
-}
+
 
 function HeroSection() {
 
@@ -51,8 +33,6 @@ function HeroSection() {
       <div className='babylon-app'>
         <Babylonapp />
       </div>
-      <div className='testelement'>
-    </div>
     </div>
   );
 }
