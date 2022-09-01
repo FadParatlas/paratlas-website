@@ -223,22 +223,34 @@ class BabylonScene extends Component {
     scrollDistance(function (distance) {
       console.log('You travelled ' + parseInt(Math.abs(distance), 10) + 'px ' + (distance < 0 ? 'up' : 'down'));
       var movementDelta = parseInt(Math.abs(distance), 10);
-      var frameDelta = movementDelta/winheight*150;
-      if(distance < 0) {
-        console.log(frameDelta);
-        var animatable = scene.beginDirectAnimation(camera, [rotationcam,animationcamera],
-          j,j + (frameDelta), false)
-          // animatable.goToFrame(j -= frameDelta);
-          // animatable.pause();
-          console.log(j);
-          if (j > 0 ) {
-            j -= frameDelta;
-          }
-          else {
-            j = 150;
-          }
+      var frameDelta = movementDelta / winheight * 150;
 
-      } else if (distance > 0) {
+      if (distance < -10 && distance < 0) {
+        console.log(frameDelta);
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera],
+          j, j + (frameDelta), false)
+        // animatable.goToFrame(j -= frameDelta);
+        // animatable.pause();
+        console.log(j);
+        if (j > 0) {
+          j -= frameDelta;
+        }
+        else {
+          j = 150;
+        }
+      } else if (distance >= -10 && distance < 10) {
+
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j > 0) {
+          j--;
+        } else {
+          j = 150;
+        }
+
+
+      } else if (distance > 10) {
         console.log(-movementDelta);
       }
       else {
@@ -248,14 +260,14 @@ class BabylonScene extends Component {
 
     window.addEventListener('wheel', function (event) {
       if (event.deltaY < 0) {
-        // var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
-        // animatable.goToFrame(j);
-        // animatable.pause();
-        // if (j > 0) {
-        //   j--;
-        // } else {
-        //   j = 150;
-        // }
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j > 0) {
+          j--;
+        } else {
+          j = 150;
+        }
       }
 
       else if (event.deltaY > 0) {
