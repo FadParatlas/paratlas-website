@@ -179,109 +179,83 @@ class BabylonScene extends Component {
       console.log(pctScrolled + '% scrolled')
     }
 
-    function scrollDistance(callback, refresh = 66) {
+    let oldVal = 0;
+    let newVal = 0;
+    var isScrolling;
 
-      // Make sure a valid callback was provided
-      if (!callback || typeof callback !== 'function') return;
+    window.addEventListener('scroll', (e) => {
+      newVal = window.scrollY;
+      var scrollDelta =((newVal - oldVal)/window.innerHeight)*100;
+      console.log (window.innerHeight); 
 
-      // Variables
-      let isScrolling, start, end, distance;
-
-      // Listen for scroll events
-      window.addEventListener('scroll', function (event) {
-
-        // Set starting position
-        if (!start) {
-          start = window.pageYOffset;
-        }
-
-        // Clear our timeout throughout the scroll
-        window.clearTimeout(isScrolling);
-
-        // Set a timeout to run after scrolling ends
-        isScrolling = setTimeout(function () {
-
-          amountscrolled()
-
-          // Calculate distance
-          end = window.pageYOffset;
-          distance = end - start;
-
-          // Run the callback
-          callback(distance, start, end);
-
-          // Reset calculations
-          start = null;
-          end = null;
-          distance = null;
-
-        }, refresh);
-
-      }, false);
-
-    }
-    scrollDistance(function (distance) {
-      console.log('You travelled ' + parseInt(Math.abs(distance), 10) + 'px ' + (distance < 0 ? 'up' : 'down'));
-      var movementDelta = parseInt(Math.abs(distance), 10);
-      var frameDelta = movementDelta / winheight * 150;
-
-      if (distance < -10 && distance < 0) {
-        console.log(frameDelta);
-        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera],
-          j, j + (frameDelta), false)
-        // animatable.goToFrame(j -= frameDelta);
-        // animatable.pause();
-        console.log(j);
-        if (j > 0) {
-          j -= frameDelta;
-        }
-        else {
-          j = 150;
-        }
-      } else if (distance >= -10 && distance < 10) {
-
-        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
-        animatable.goToFrame(j);
-        animatable.pause();
-        if (j > 0) {
-          j--;
-        } else {
-          j = 150;
-        }
-
-
-      } else if (distance > 10) {
-        console.log(-movementDelta);
-      }
-      else {
-        console.log("no distance");
-      }
-    });
-
-    window.addEventListener('wheel', function (event) {
-      if (event.deltaY < 0) {
-        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
-        animatable.goToFrame(j);
-        animatable.pause();
-        if (j > 0) {
-          j--;
-        } else {
-          j = 150;
-        }
+      if (oldVal < newVal) { //scroll up functions
+        console.log(newVal);
       }
 
-      else if (event.deltaY > 0) {
-        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
-          1, j, false);
-        animatable.goToFrame(j);
-        animatable.pause();
-        if (j < 150) {
-          j++;
-        } else {
-          j = 0;
-        }
+      else if (oldVal > newVal) {
+        console.log(newVal);
       }
-    });
+      oldVal = newVal;
+    })
+
+    // scrollDistance(function (distance) {
+
+    //   var movementDelta = parseInt(Math.abs(distance), 10);
+    //   var frameDelta = movementDelta / winheight * 150;
+    //   console.log(distance);
+
+    //   if (distance < -10) {
+    //     // console.log(frameDelta);
+    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera],
+    //       j, j + (frameDelta), false)
+    //     // animatable.goToFrame(j -= frameDelta);
+    //     // animatable.pause();
+    //     j -= frameDelta;
+    //     console.log(j);
+
+    //   } else if (distance >= -10 && distance < 10) {
+    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+    //     animatable.goToFrame(j);
+    //     animatable.pause();
+    //     if (j > 0) {
+    //       j--;
+    //     } else {
+    //       j = 150;
+    //     }
+
+
+    //   } else if (distance > 10) {
+    //     console.log(-movementDelta);
+    //   }
+    //   else {
+    //     console.log("no distance");
+    //   }
+    // });
+
+    // window.addEventListener('wheel', function (event) {
+      // if (event.deltaY < 0) {
+      //   var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+      //   animatable.goToFrame(j);
+      //   animatable.pause();
+      //   if (j > 0) {
+      //     j--;
+      //   } else {
+      //     j = 150;
+      //   }
+      // }
+
+    //   if (event.deltaY > 0) {
+    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
+    //       1, j, false);
+    //     animatable.goToFrame(j);
+    //     animatable.pause();
+    //     if (j < 150) {
+    //       j++;
+    //     } else {
+    //       j = 0;
+    //     }
+    //   }
+    // });
 
   };
 
