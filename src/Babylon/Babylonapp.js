@@ -182,15 +182,13 @@ class BabylonScene extends Component {
       console.log(pctScrolled + '% scrolled')
     }
 
-    let oldVal = 0;
-    let newVal = 0;
-    var isScrolling;
+    var lastScrollTop = 0;
 
     window.addEventListener('scroll', (e) => {
-      newVal = window.scrollY;
+      var st = window.pageYOffset || document.documentElement.scrollTop;
       console.log(window.innerHeight);
 
-      if (oldVal < newVal) { //scroll up functions
+      if (st > lastScrollTop) { //scroll up functions
         var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
         animatable.goToFrame(j);
         animatable.pause();
@@ -202,7 +200,7 @@ class BabylonScene extends Component {
 
       }
 
-      else if (oldVal > newVal) {
+      else {
         var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
           1, j, false);
         animatable.goToFrame(j);
@@ -213,7 +211,6 @@ class BabylonScene extends Component {
           j = 0;
         }
       }
-      oldVal = newVal;
     })
 
   };
