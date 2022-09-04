@@ -66,9 +66,12 @@ class BabylonScene extends Component {
 
   addExternalModels = () => {
     BABYLON.SceneLoader.ImportMesh("",
-      "https://dl.dropbox.com/s/otf85vnoz8an32x/Expo%20%282%29.glb?", "an_animated_cat.glb?", scene, function (meshes) {
-        var cat = meshes[0];
-        cat.scaling = new BABYLON.Vector3(1, 1, 1);
+      "https://dl.dropbox.com/s/0xhttzbpwnhj9fk/Mayer_Airfryer_.glb?"
+      , "an_animated_cat.glb?", scene,
+      function (meshes) {
+        var model = meshes[0];
+        model.scaling = new BABYLON.Vector3(5, 5, 5);
+        model.position = new BABYLON.Vector3(0, 0, 1);
       });
 
   }
@@ -77,7 +80,7 @@ class BabylonScene extends Component {
     // Create a basic light, aiming 0,1,0 - meaning, to the sky.
     var light = new BABYLON.HemisphericLight(
       "light1",
-      new BABYLON.Vector3(0, 100, 0),
+      new BABYLON.Vector3(1, 10, 0),
       scene
     );
   };
@@ -185,77 +188,33 @@ class BabylonScene extends Component {
 
     window.addEventListener('scroll', (e) => {
       newVal = window.scrollY;
-      var scrollDelta =((newVal - oldVal)/window.innerHeight)*100;
-      console.log (window.innerHeight); 
+      console.log(window.innerHeight);
 
       if (oldVal < newVal) { //scroll up functions
-        console.log(newVal);
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j > 0) {
+          j--;
+        } else {
+          j = 150;
+        }
+
       }
 
       else if (oldVal > newVal) {
-        console.log(newVal);
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
+          1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j < 150) {
+          j++;
+        } else {
+          j = 0;
+        }
       }
       oldVal = newVal;
     })
-
-    // scrollDistance(function (distance) {
-
-    //   var movementDelta = parseInt(Math.abs(distance), 10);
-    //   var frameDelta = movementDelta / winheight * 150;
-    //   console.log(distance);
-
-    //   if (distance < -10) {
-    //     // console.log(frameDelta);
-    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera],
-    //       j, j + (frameDelta), false)
-    //     // animatable.goToFrame(j -= frameDelta);
-    //     // animatable.pause();
-    //     j -= frameDelta;
-    //     console.log(j);
-
-    //   } else if (distance >= -10 && distance < 10) {
-    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
-    //     animatable.goToFrame(j);
-    //     animatable.pause();
-    //     if (j > 0) {
-    //       j--;
-    //     } else {
-    //       j = 150;
-    //     }
-
-
-    //   } else if (distance > 10) {
-    //     console.log(-movementDelta);
-    //   }
-    //   else {
-    //     console.log("no distance");
-    //   }
-    // });
-
-    // window.addEventListener('wheel', function (event) {
-      // if (event.deltaY < 0) {
-      //   var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
-      //   animatable.goToFrame(j);
-      //   animatable.pause();
-      //   if (j > 0) {
-      //     j--;
-      //   } else {
-      //     j = 150;
-      //   }
-      // }
-
-    //   if (event.deltaY > 0) {
-    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
-    //       1, j, false);
-    //     animatable.goToFrame(j);
-    //     animatable.pause();
-    //     if (j < 150) {
-    //       j++;
-    //     } else {
-    //       j = 0;
-    //     }
-    //   }
-    // });
 
   };
 
