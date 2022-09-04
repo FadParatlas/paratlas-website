@@ -186,8 +186,6 @@ class BabylonScene extends Component {
 
     window.addEventListener('scroll', (e) => {
       var st = window.pageYOffset || document.documentElement.scrollTop;
-      console.log(window.innerHeight);
-
       if (st > lastScrollTop) { //scroll up functions
         var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
         animatable.goToFrame(j);
@@ -211,7 +209,8 @@ class BabylonScene extends Component {
           j = 0;
         }
       }
-    })
+      lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+    }, false);
 
   };
 
