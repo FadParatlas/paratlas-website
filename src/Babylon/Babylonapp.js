@@ -183,7 +183,34 @@ class BabylonScene extends Component {
     }
 
     var lastScrollTop = 0;
+    window.addEventListener('touchmove' , this.scrollStart, false);
 
+    function scrollStart () {
+      var st = window.pageYOffset || document.documentElement.scrollTop;
+      if (st > lastScrollTop) { //scroll up functions
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j > 0) {
+          j--;
+        } else {
+          j = 150;
+        }
+      }
+
+      else {
+        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
+          1, j, false);
+        animatable.goToFrame(j);
+        animatable.pause();
+        if (j < 150) {
+          j++;
+        } else {
+          j = 0;
+        }
+      }
+    }
+    window.addEventListener('scroll', this.scroll, false);
     window.addEventListener('scroll', (e) => {
       var st = window.pageYOffset || document.documentElement.scrollTop;
       if (st > lastScrollTop) { //scroll up functions
@@ -195,7 +222,6 @@ class BabylonScene extends Component {
         } else {
           j = 150;
         }
-
       }
 
       else {
