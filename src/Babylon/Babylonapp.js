@@ -9,6 +9,7 @@ var startingPoint;
 var currentMesh;
 var ground;
 var canv;
+var model;
 
 class BabylonScene extends Component {
 
@@ -29,7 +30,7 @@ class BabylonScene extends Component {
 
     //--Camera---
     this.addCamera();
-    this.handleCameraAnimations();
+    // this.handleCameraAnimations();
 
     // this.addMesh();
     this.addExternalModels();
@@ -66,12 +67,12 @@ class BabylonScene extends Component {
 
   addExternalModels = () => {
     BABYLON.SceneLoader.ImportMesh("",
-      "https://dl.dropbox.com/s/0xhttzbpwnhj9fk/Mayer_Airfryer_.glb?"
-      , "an_animated_cat.glb?", scene,
+      "https://dl.dropbox.com/s/jfxzc71kdm4n770/"
+      , "Mayer_Airfryer_.glb?", scene,
       function (meshes) {
-        var model = meshes[0];
-        model.scaling = new BABYLON.Vector3(5, 5, 5);
-        model.position = new BABYLON.Vector3(0, 0, 1);
+        model = meshes[0];
+        model.position = new BABYLON.Vector3(10, 5, 5);
+        model.rotation = new BABYLON.Vector3(0,0,0);
       });
 
   }
@@ -80,14 +81,23 @@ class BabylonScene extends Component {
     // Create a basic light, aiming 0,1,0 - meaning, to the sky.
     var light = new BABYLON.HemisphericLight(
       "light1",
-      new BABYLON.Vector3(1, 10, 0),
+      new BABYLON.Vector3(0, 4, -3),
       scene
     );
+    light.rotation = new BABYLON.Vector3(0.2,0,0);
+    light.intensity = 5;
   };
 
   addCamera = () => {
     // ---------------ArcRotateCamera or Orbit Control----------
-    camera = new BABYLON.FlyCamera("UniversalCamera", new BABYLON.Vector3(-1, 1.5, -10), scene);
+    camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 20, -20), scene);
+
+    // This targets the camera to scene origin
+    camera.setTarget(new BABYLON.Vector3(0, 10, 5));
+
+    // This attaches the camera to the canvas
+    camera.attachControl(canv, false);
+
     camera.inertia = 0;
   };
 
@@ -156,59 +166,59 @@ class BabylonScene extends Component {
 
     // var animatable = scene.beginAnimation(camera, 0, 100, false);
 
-    let j = 0;
-    var pctScrolled;
-    var winheight;
+    // let j = 0;
+    // var pctScrolled;
+    // var winheight;
 
-    var winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
+    // var winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
 
-    function getDocHeight() {
-      var D = document;
-      return Math.max(
-        D.body.scrollHeight, D.documentElement.scrollHeight,
-        D.body.offsetHeight, D.documentElement.offsetHeight,
-        D.body.clientHeight, D.documentElement.clientHeight
-      )
-    }
+    // function getDocHeight() {
+    //   var D = document;
+    //   return Math.max(
+    //     D.body.scrollHeight, D.documentElement.scrollHeight,
+    //     D.body.offsetHeight, D.documentElement.offsetHeight,
+    //     D.body.clientHeight, D.documentElement.clientHeight
+    //   )
+    // }
 
-    var docheight = getDocHeight()
+    // var docheight = getDocHeight()
 
-    function amountscrolled() {
-      winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
-      var docheight = getDocHeight()
-      var scrollTop = window.pageYOffset || (document.documentElement || document.body.parentNode || document.body).scrollTop
-      var trackLength = docheight - winheight
-      pctScrolled = Math.floor(scrollTop / trackLength * 100) // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
-      console.log(pctScrolled + '% scrolled')
-    }
+    // function amountscrolled() {
+    //   winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
+    //   var docheight = getDocHeight()
+    //   var scrollTop = window.pageYOffset || (document.documentElement || document.body.parentNode || document.body).scrollTop
+    //   var trackLength = docheight - winheight
+    //   pctScrolled = Math.floor(scrollTop / trackLength * 100) // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
+    //   console.log(pctScrolled + '% scrolled')
+    // }
 
-    var lastScrollTop = 0;
-    window.addEventListener('scroll', (e) => {
-      var st = window.pageYOffset || document.documentElement.scrollTop;
-      if (st > lastScrollTop) { //scroll up functions
-        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
-        animatable.goToFrame(j);
-        animatable.pause();
-        if (j > 0) {
-          j--;
-        } else {
-          j = 150;
-        }
-      }
+    // var lastScrollTop = 0;
+    // window.addEventListener('scroll', (e) => {
+    //   var st = window.pageYOffset || document.documentElement.scrollTop;
+    //   if (st > lastScrollTop) { //scroll up functions
+    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
+    //     animatable.goToFrame(j);
+    //     animatable.pause();
+    //     if (j > 0) {
+    //       j--;
+    //     } else {
+    //       j = 150;
+    //     }
+    //   }
 
-      else {
-        var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
-          1, j, false);
-        animatable.goToFrame(j);
-        animatable.pause();
-        if (j < 150) {
-          j++;
-        } else {
-          j = 0;
-        }
-      }
-      lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-    }, false);
+    //   else {
+    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
+    //       1, j, false);
+    //     animatable.goToFrame(j);
+    //     animatable.pause();
+    //     if (j < 150) {
+    //       j++;
+    //     } else {
+    //       j = 0;
+    //     }
+    //   }
+    //   lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
+    // }, false);
 
   };
 
@@ -224,16 +234,17 @@ class BabylonScene extends Component {
     var pointerDown = function (mesh) {
       currentMesh = mesh;
       startingPoint = getGroundPosition();
+      console.log(mesh);
       if (startingPoint) { // we need to disconnect camera from canvas
         setTimeout(function () {
-          // camera.detachControl(canv);
+          camera.detachControl(canv);
         }, 0);
       }
     }
 
     var pointerUp = function () {
       if (startingPoint) {
-        // camera.attachControl(canv, true);
+        camera.attachControl(canv, true);
         startingPoint = null;
         return;
       }
@@ -247,6 +258,10 @@ class BabylonScene extends Component {
       if (!current) {
         return;
       }
+
+
+
+
 
       var diff = current.subtract(startingPoint);
       currentMesh.position.addInPlace(diff);
@@ -272,7 +287,7 @@ class BabylonScene extends Component {
     });
   }
   changeSkybox = () => {
-    scene.clearColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+    scene.clearColor = new BABYLON.Color3((249/255), (247/255), (247/255));
   }
 
   addMesh = () => {
@@ -314,20 +329,18 @@ class BabylonScene extends Component {
     // scene.beginAnimation(box, 0, 6 * frameRate, true);
   };
 
-  // addGround = () => {
-  //   // Create a built-in "ground" shape.
-  //   ground = BABYLON.MeshBuilder.CreateGround(
-  //     "ground1",
-  //     { height: 100, width: 100, subdivisions: 2 },
-  //     scene
-  //   );
+  addGround = () => {
+    // Create a built-in "ground" shape.
+    ground = BABYLON.MeshBuilder.CreateGround(
+      "ground1",
+      { height: 50, width: 50, subdivisions: 2 },
+      scene
+    );
 
-  //   var groundMat = new BABYLON.StandardMaterial("ground", scene);
-  //   groundMat.diffuseColor = new BABYLON.Color3(0.4, 0.4, 0.4);
-  //   groundMat.specularColor = new BABYLON.Color3(0.4, 0.4, 0.4);
-  //   groundMat.emissiveColor = BABYLON.Color3.Black();
-  //   ground.material = groundMat;
-  // };
+    var groundMat = new BABYLON.StandardMaterial("ground", scene);
+    groundMat.diffuseColor = new BABYLON.Color3((249/255), (247/255), (247/255));
+    ground.material = groundMat;
+  };
 
   render() {
     return (

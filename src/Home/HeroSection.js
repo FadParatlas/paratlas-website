@@ -5,6 +5,7 @@ import { Button } from '../components/Button';
 import './HeroSection.css';
 import Babylonapp from '../Babylon/Babylonapp';
 import colors from '../components/css-colors';
+import {FadeInSection} from '../components/pages/effects/FadeSection'
 
 
 
@@ -12,7 +13,7 @@ function HeroSection() {
 
   return (
     <div className='hero-container'>
-      {/* <h1>Create interactive visuals with no code</h1>
+      <h1>Create interactive visuals with no code</h1>
       <div className='hero-btns'>
         <Button
           className='btns'
@@ -29,7 +30,7 @@ function HeroSection() {
         >
           Try it out <i className='far fa-play-circle' />
         </Button>
-      </div> */}
+      </div>
       <div className='babylon-app'>
         <Babylonapp />
       </div>
