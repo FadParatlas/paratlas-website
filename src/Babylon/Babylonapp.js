@@ -10,6 +10,7 @@ var currentMesh;
 var ground;
 var canv;
 var model;
+var model_2;
 
 class BabylonScene extends Component {
 
@@ -39,6 +40,8 @@ class BabylonScene extends Component {
     // this.addGround();
     this.changeSkybox();
     this.addInteractivity();
+    this.handleMeshAnimations();
+    setTimeout(this.handleMeshAnimations(),2000);
     // Add Events
     window.addEventListener("resize", this.onWindowResize, false);
 
@@ -66,13 +69,22 @@ class BabylonScene extends Component {
   };
 
   addExternalModels = () => {
-    BABYLON.SceneLoader.ImportMesh("",
+    BABYLON.SceneLoader.ImportMeshAsync("",
       "https://dl.dropbox.com/s/jfxzc71kdm4n770/"
       , "Mayer_Airfryer_.glb?", scene,
       function (meshes) {
         model = meshes[0];
         model.position = new BABYLON.Vector3(10, 5, 5);
         model.rotation = new BABYLON.Vector3(0,0,0);
+      });
+
+      BABYLON.SceneLoader.ImportMeshAsync("",
+      "https://dl.dropbox.com/s/1xeghwtg46bdzi4/Mayer_Airfryer_2.glb?"
+      , "Mayer_Airfryer_2.glb?", scene,
+      function (meshes) {
+        model_2 = meshes[0];
+        model_2.position = new BABYLON.Vector3(10, 5, 5);
+        model_2.rotation = new BABYLON.Vector3(0,0,0);
       });
 
   }
@@ -88,6 +100,12 @@ class BabylonScene extends Component {
     light.intensity = 5;
   };
 
+  detectInteraction = () => {
+    window.addEventListener("click", (e) => {
+
+    })
+  }
+
   addCamera = () => {
     // ---------------ArcRotateCamera or Orbit Control----------
     camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 20, -20), scene);
@@ -100,6 +118,42 @@ class BabylonScene extends Component {
 
     camera.inertia = 0;
   };
+
+  handleMeshAnimations = () => {
+    const frameRate = 10;
+    const frameRateMax = 600;
+    //handle position
+    var airfryAnim = new BABYLON.Animation(
+      "AirFryAnimation",
+      "position",
+      frameRate,
+      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    var keys = [];
+
+
+    keys.push({
+      frame: 0,
+      value: new BABYLON.Vector3(0, 0, 0),
+    });
+
+    keys.push({
+      frame: 100,
+      value: new BABYLON.Vector3(-1.1, 1.5, 2.5),
+    });
+
+    keys.push({
+      frame: 150,
+      value: new BABYLON.Vector3(1, 1.5, 2.5),
+    })
+
+    airfryAnim.setKeys(keys);
+    model_2.push(airfryAnim);
+
+    scene.beginAnimation(model_2, airfryAnim, 150, 0, false);
+  }
 
   handleCameraAnimations = () => {
     const frameRate = 10;
