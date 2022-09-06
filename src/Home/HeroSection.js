@@ -1,12 +1,8 @@
 import React from 'react';
-import { useEffect } from 'react';
 import '../App.css';
 import { Button } from '../components/Button';
 import './HeroSection.css';
 import Babylonapp from '../Babylon/Babylonapp';
-import {FadeInSection} from '../components/pages/effects/FadeSection'
-
-
 
 function HeroSection() {
 

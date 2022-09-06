@@ -1,16 +1,15 @@
 import React, { Component } from "react";
-import * as ReactDOM from 'react-dom';
 import * as BABYLON from "@babylonjs/core";
 import '@babylonjs/loaders';
+import { addExternalModels } from "./components/ExternalMeshLoader";
+import { addLight } from "./components/LightManager";
+import { addCamera } from "./components/CameraManager";
+import { addSkybox } from "./components/SkyboxManager";
 
 var scene;
 var camera;
-var startingPoint;
-var currentMesh;
-var ground;
 var canv;
 var model;
-var model_2;
 
 class BabylonScene extends Component {
 
@@ -27,20 +26,11 @@ class BabylonScene extends Component {
 
     canv = this.canvas;
 
-    this.addLight();
+    addCamera();
+    addExternalModels(model,scene);
+    addLight(camera,canv,scene);
+    addSkybox(scene);
 
-    //--Camera---
-    this.addCamera();
-    // this.handleCameraAnimations();
-
-    // this.addMesh();
-    this.addExternalModels();
-
-    //--Ground---
-    // this.addGround();
-    this.changeSkybox();
-    this.addInteractivity();
-    // Add Events
     window.addEventListener("resize", this.onWindowResize, false);
 
     // Render Loop
@@ -66,331 +56,12 @@ class BabylonScene extends Component {
     this.windowResizeListener();
   };
 
-  addExternalModels = () => {
-    BABYLON.SceneLoader.ImportMesh("",
-      "https://dl.dropbox.com/s/jfxzc71kdm4n770/"
-      , "Mayer_Airfryer_.glb?", scene,
-      function (meshes) {
-        model = meshes[0];
-        model.position = new BABYLON.Vector3(10, 5, 5);
-        model.rotation = new BABYLON.Vector3(0,0,0);
-      });
-
-      BABYLON.SceneLoader.ImportMesh("",
-      "https://dl.dropbox.com/s/1xeghwtg46bdzi4/Mayer_Airfryer_2.glb?"
-      , "Mayer_Airfryer_2.glb?", scene,
-      function (meshes) {
-        model_2 = meshes[0];
-        model_2.position = new BABYLON.Vector3(10, 5, 5);
-        model_2.rotation = new BABYLON.Vector3(0,0,0);
-
-        this.handleMeshAnimations();
-      });
-
-  }
-  addLight = () => {
-    //---------- LIGHT---------------------
-    // Create a basic light, aiming 0,1,0 - meaning, to the sky.
-    var light = new BABYLON.HemisphericLight(
-      "light1",
-      new BABYLON.Vector3(0, 4, -3),
-      scene
-    );
-    light.rotation = new BABYLON.Vector3(0.2,0,0);
-    light.intensity = 5;
-  };
 
   detectInteraction = () => {
     window.addEventListener("click", (e) => {
 
     })
   }
-
-  addCamera = () => {
-    // ---------------ArcRotateCamera or Orbit Control----------
-    camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 20, -20), scene);
-
-    // This targets the camera to scene origin
-    camera.setTarget(new BABYLON.Vector3(0, 10, 5));
-
-    // This attaches the camera to the canvas
-    camera.attachControl(canv, false);
-
-    camera.inertia = 0;
-  };
-
-  handleMeshAnimations = () => {
-    const frameRate = 10;
-    const frameRateMax = 600;
-    //handle position
-    var airfryAnim = new BABYLON.Animation(
-      "AirFryAnimation",
-      "position",
-      frameRate,
-      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    var keys = [];
-
-
-    keys.push({
-      frame: 0,
-      value: new BABYLON.Vector3(0, 0, 0),
-    });
-
-    keys.push({
-      frame: 100,
-      value: new BABYLON.Vector3(5, 0, 0),
-    });
-
-    keys.push({
-      frame: 150,
-      value: new BABYLON.Vector3(5, 10, 0),
-    })
-
-    airfryAnim.setKeys(keys);
-    model_2.push(airfryAnim);
-
-    scene.beginAnimation(model_2, airfryAnim, 150, 0, true);
-  }
-
-  handleCameraAnimations = () => {
-    const frameRate = 10;
-    const frameRateMax = 600;
-    //handle position
-    var animationcamera = new BABYLON.Animation(
-      "myAnimationcamera",
-      "position",
-      frameRate,
-      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    var keys = [];
-
-
-    keys.push({
-      frame: 0,
-      value: camera.position.clone(),
-    });
-
-    keys.push({
-      frame: 100,
-      value: new BABYLON.Vector3(-1.1, 1.5, 2.5),
-    });
-
-    keys.push({
-      frame: 150,
-      value: new BABYLON.Vector3(1, 1.5, 2.5),
-    })
-
-    animationcamera.setKeys(keys);
-
-    //Handle Rotation
-    var rotationcam = new BABYLON.Animation(
-      "rotcamera",
-      "rotation.y",
-      frameRate,
-      BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    var keyr = [];
-
-    keyr.push({
-      frame: 0,
-      value: 0,
-    });
-
-    keyr.push({
-      frame: 80,
-      value: 0,
-    })
-
-    keyr.push({
-      frame: 100,
-      value: Math.PI / 2
-    })
-
-    rotationcam.setKeys(keyr);
-
-    camera.animations = [];
-    // camera.animations.push(rotationcam);
-
-    // var animatable = scene.beginAnimation(camera, 0, 100, false);
-
-    // let j = 0;
-    // var pctScrolled;
-    // var winheight;
-
-    // var winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
-
-    // function getDocHeight() {
-    //   var D = document;
-    //   return Math.max(
-    //     D.body.scrollHeight, D.documentElement.scrollHeight,
-    //     D.body.offsetHeight, D.documentElement.offsetHeight,
-    //     D.body.clientHeight, D.documentElement.clientHeight
-    //   )
-    // }
-
-    // var docheight = getDocHeight()
-
-    // function amountscrolled() {
-    //   winheight = window.innerHeight || (document.documentElement || document.body).clientHeight
-    //   var docheight = getDocHeight()
-    //   var scrollTop = window.pageYOffset || (document.documentElement || document.body.parentNode || document.body).scrollTop
-    //   var trackLength = docheight - winheight
-    //   pctScrolled = Math.floor(scrollTop / trackLength * 100) // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
-    //   console.log(pctScrolled + '% scrolled')
-    // }
-
-    // var lastScrollTop = 0;
-    // window.addEventListener('scroll', (e) => {
-    //   var st = window.pageYOffset || document.documentElement.scrollTop;
-    //   if (st > lastScrollTop) { //scroll up functions
-    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j + 1, j, false);
-    //     animatable.goToFrame(j);
-    //     animatable.pause();
-    //     if (j > 0) {
-    //       j--;
-    //     } else {
-    //       j = 150;
-    //     }
-    //   }
-
-    //   else {
-    //     var animatable = scene.beginDirectAnimation(camera, [rotationcam, animationcamera], j -
-    //       1, j, false);
-    //     animatable.goToFrame(j);
-    //     animatable.pause();
-    //     if (j < 150) {
-    //       j++;
-    //     } else {
-    //       j = 0;
-    //     }
-    //   }
-    //   lastScrollTop = st <= 0 ? 0 : st; // For Mobile or negative scrolling
-    // }, false);
-
-  };
-
-  addInteractivity = () => {
-    var getGroundPosition = function () {
-      var pickinfo = scene.pick(scene.pointerX, scene.pointerY, function (mesh) { return mesh == ground; });
-      if (pickinfo.hit) {
-        return pickinfo.pickedPoint;
-      }
-
-      return null;
-    }
-    var pointerDown = function (mesh) {
-      currentMesh = mesh;
-      startingPoint = getGroundPosition();
-      console.log(mesh);
-      if (startingPoint) { // we need to disconnect camera from canvas
-        setTimeout(function () {
-          camera.detachControl(canv);
-        }, 0);
-      }
-    }
-
-    var pointerUp = function () {
-      if (startingPoint) {
-        camera.attachControl(canv, true);
-        startingPoint = null;
-        return;
-      }
-    }
-
-    var pointerMove = function () {
-      if (!startingPoint) {
-        return;
-      }
-      var current = getGroundPosition();
-      if (!current) {
-        return;
-      }
-
-      var diff = current.subtract(startingPoint);
-      currentMesh.position.addInPlace(diff);
-
-      startingPoint = current;
-
-    }
-
-    scene.onPointerObservable.add((pointerInfo) => {
-      switch (pointerInfo.type) {
-        case BABYLON.PointerEventTypes.POINTERDOWN:
-          if (pointerInfo.pickInfo.hit && pointerInfo.pickInfo.pickedMesh !== ground) {
-            pointerDown(pointerInfo.pickInfo.pickedMesh)
-          }
-          break;
-        case BABYLON.PointerEventTypes.POINTERUP:
-          pointerUp();
-          break;
-        case BABYLON.PointerEventTypes.POINTERMOVE:
-          pointerMove();
-          break;
-      }
-    });
-  }
-  changeSkybox = () => {
-    scene.clearColor = new BABYLON.Color3((249/255), (247/255), (247/255));
-  }
-
-  addMesh = () => {
-    var box = BABYLON.MeshBuilder.CreateBox("testBox", { size: 1 }, scene)
-
-    // const frameRate = 10;
-
-    // const xSlide = new BABYLON.Animation("Slide", "position", frameRate, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
-
-    // const keyFrames = [];
-
-    // keyFrames.push({
-    //   frame: 0,
-    //   value: box.position.clone(),
-    // });
-
-    // keyFrames.push({
-    //   frame: frameRate,
-    //   value: new BABYLON.Vector3(0,0,5),
-    // });
-
-    // keyFrames.push({
-    //   frame: 2 * frameRate,
-    //   value: new BABYLON.Vector3(0,0,-5),
-    // });
-
-    // keyFrames.push({
-    //   frame: 4 * frameRate,
-    //   value: new BABYLON.Vector3(-5,0,-10),
-    // });
-    // keyFrames.push({
-    //   frame: 6 * frameRate,
-    //   value: box.position.clone(),
-    // });
-
-    // xSlide.setKeys(keyFrames);
-
-    // box.animations.push(xSlide);
-    // scene.beginAnimation(box, 0, 6 * frameRate, true);
-  };
-
-  addGround = () => {
-    // Create a built-in "ground" shape.
-    ground = BABYLON.MeshBuilder.CreateGround(
-      "ground1",
-      { height: 50, width: 50, subdivisions: 2 },
-      scene
-    );
-
-    var groundMat = new BABYLON.StandardMaterial("ground", scene);
-    groundMat.diffuseColor = new BABYLON.Color3((249/255), (247/255), (247/255));
-    ground.material = groundMat;
-  };
 
   render() {
     return (

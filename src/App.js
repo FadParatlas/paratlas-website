@@ -4,7 +4,7 @@ import  {BrowserRouter as Router, Routes, Route} from
 'react-router-dom';
 import './App.css';
 import Home from './components/pages/Home'
-import React, { Component }  from 'react';
+import React from 'react';
 
 
 function App() {
