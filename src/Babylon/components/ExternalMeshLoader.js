@@ -11,5 +11,11 @@ export function addExternalModels(model, scene, camera) {
       model.position = new BABYLON.Vector3(10, 5, 5);
 
       airFryerAnimation(scene, model, camera);
+
+      var mat = scene.getMaterialByName("Mayer");
+      var probe = new BABYLON.ReflectionProbe("main", 512, scene);
+      probe.renderList.push(model);
+
+      mat.reflectionTexture = probe.cubeTexture;
     });
 }

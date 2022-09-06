@@ -5,6 +5,7 @@ import { addLight } from "./components/LightManager";
 import { addCamera } from "./components/CameraManager";
 import { addSkybox } from "./components/SkyboxManager";
 import '@babylonjs/loaders';
+import '@babylonjs/inspector';
 
 var scene;
 var camera;
