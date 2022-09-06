@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import * as BABYLON from "@babylonjs/core";
-import '@babylonjs/loaders';
-import { addExternalModels } from "./components/ExternalMeshLoader";
+import { addExternalModels} from "./components/ExternalMeshLoader";
 import { addLight } from "./components/LightManager";
 import { addCamera } from "./components/CameraManager";
 import { addSkybox } from "./components/SkyboxManager";
+import '@babylonjs/loaders';
 
 var scene;
 var camera;
@@ -23,6 +23,7 @@ class BabylonScene extends Component {
     this.engine = new BABYLON.Engine(this.canvas, true);
 
     scene = new BABYLON.Scene(this.engine);
+    scene.debugLayer.show();
 
     canv = this.canvas;
 
