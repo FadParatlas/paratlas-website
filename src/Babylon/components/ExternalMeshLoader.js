@@ -17,5 +17,10 @@ export function addExternalModels(model, scene, camera) {
       probe.renderList.push(model);
 
       mat.reflectionTexture = probe.cubeTexture;
+
+      const idleAnim = scene.getAnimationGroupByName(
+        "Idle");
+    idleAnim.start(false, 1.0, idleAnim.from, idleAnim.to, false);
+    
     });
 }

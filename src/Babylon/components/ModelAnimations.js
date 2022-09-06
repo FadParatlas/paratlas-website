@@ -1,6 +1,7 @@
 import * as BABYLON from "@babylonjs/core";
 
 export function airFryerAnimation(scene, model,camera) {
+
     const modelAnim = scene.getAnimationGroupByName(
         "Open_Handle");
 
