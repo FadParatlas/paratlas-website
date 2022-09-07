@@ -7,5 +7,5 @@ export function addLight(scene) {
         scene
       );
       // light.rotation = new BABYLON.Vector3(5,-1,0);
-      light.intensity = 0.8;
+      light.intensity = 0.3;
 }

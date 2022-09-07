@@ -24,13 +24,14 @@ class BabylonScene extends Component {
     this.engine = new BABYLON.Engine(this.canvas, true);
 
     scene = new BABYLON.Scene(this.engine);
+
     scene.debugLayer.show();
 
     canv = this.canvas;
 
     addCamera();
     addExternalModels(model,scene);
-    addLight(camera,canv,scene);
+    addLight(scene);
     addSkybox(scene);
 
     window.addEventListener("resize", this.onWindowResize, false);

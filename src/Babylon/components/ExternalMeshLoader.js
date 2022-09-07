@@ -3,24 +3,35 @@ import '@babylonjs/loaders';
 import { airFryerAnimation } from "./ModelAnimations";
 
 export function addExternalModels(model, scene, camera) {
-  BABYLON.SceneLoader.ImportMesh("",
+  const importModels = BABYLON.SceneLoader.ImportMeshAsync("",
     "https://dl.dropbox.com/s/jfxzc71kdm4n770/"
-    , "Mayer_Airfryer_.glb?", scene,
-    function (meshes) {
-      model = meshes[0];
-      model.position = new BABYLON.Vector3(10, 5, 5);
+    , "Mayer_Airfryer_.glb?", scene, function (evt) {
+      var loadedPercent = 0;
+      if (evt.lengthComputable) {
+          loadedPercent = (evt.loaded * 100 / evt.total).toFixed();
+      } else {
+          var dlCount = evt.loaded / (1024 * 1024);
+          loadedPercent = Math.floor(dlCount * 100.0) / 100.0;
+      }
+      console.log(loadedPercent);
+    })
 
-      airFryerAnimation(scene, model, camera);
+  importModels.then((result) => {
 
-      var mat = scene.getMaterialByName("Mayer");
-      var probe = new BABYLON.ReflectionProbe("main", 512, scene);
-      probe.renderList.push(model);
+    model = result.meshes[0];
+    model.position = new BABYLON.Vector3(10, 5, 5);
 
-      mat.reflectionTexture = probe.cubeTexture;
+    airFryerAnimation(scene, model, camera);
 
-      const idleAnim = scene.getAnimationGroupByName(
-        "Idle");
+    var mat = scene.getMaterialByName("Mayer");
+    var probe = new BABYLON.ReflectionProbe("main", 512, scene);
+    probe.renderList.push(model);
+
+    mat.reflectionTexture = probe.cubeTexture;
+
+    const idleAnim = scene.getAnimationGroupByName(
+      "Idle");
     idleAnim.start(false, 1.0, idleAnim.from, idleAnim.to, false);
-    
-    });
+
+  })
 }
