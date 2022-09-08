@@ -22,10 +22,10 @@
 }
 
 .hero-container>h1 {
-  color: black;
+  color: #687faab4;
   position: absolute;
   top :25vh;
-  left: 5vw;
+  left: 15vw;
   max-width: 1000px;
   font-size: 100px;
   text-align: start;
@@ -49,7 +49,7 @@
   z-index: 4;
   position: absolute;
   top:30vh;
-  left: 5vw;
+  left: 15vw;
 }
 
 .hero-btns .btn {
@@ -80,8 +80,8 @@
 
 @media screen and (max-width: 960px) {
   .hero-container>h1 {
-    font-size: 32px;
-    margin-top: -250px;
+    font-size: 85px;
+    margin-top: -20px;
   }
 
   .hero-container>p {
@@ -96,9 +96,9 @@
 
 @media screen and (max-width: 768px) {
   .hero-container>h1 {
-    font-size: 30px;
-    margin-top: -350px;
-    max-width: 400px;
+    font-size: 72px;
+    margin-top: -50px;
+    max-width: 600px;
   }
 
   .hero-container>p {
@@ -106,13 +106,13 @@
     margin-top: -200px;
   }
 
-  .btn-mobile {
-    margin-top: -50px;
+  /* .btn-mobile {
+    margin-top: -20px;
     display: block;
     text-decoration: none;
-  }
+  } */
 
-  .btn {
+  /* .btn {
     width: 100%;
-  }
+  } */
 }
