@@ -1,6 +1,10 @@
 .fade-in-section {
     opacity: 0;
     transform: translateY(20vh);
+    font-size: 70px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 80;
     visibility: hidden;
     transition: opacity 1200ms ease-out, transform 600ms ease-out,
       visibility 1200ms ease-out;

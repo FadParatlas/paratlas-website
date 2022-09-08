@@ -19,7 +19,9 @@ export function addExternalModels(model, scene, camera) {
   importModels.then((result) => {
 
     model = result.meshes[0];
-    model.position = new BABYLON.Vector3(10, 5, 5);
+    model.position = new BABYLON.Vector3(10, 11, 5);
+    model.rotation = new BABYLON.Vector3(0, 0, 0);
+    model.scaling = new BABYLON.Vector3(2,2,2);
 
     airFryerAnimation(scene, model, camera);
 
@@ -32,6 +34,8 @@ export function addExternalModels(model, scene, camera) {
     const idleAnim = scene.getAnimationGroupByName(
       "Idle");
     idleAnim.start(false, 1.0, idleAnim.from, idleAnim.to, false);
+
+    return model;
 
   })
 }

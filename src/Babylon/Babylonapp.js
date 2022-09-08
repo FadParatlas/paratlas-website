@@ -1,16 +1,11 @@
 import React, { Component } from "react";
 import * as BABYLON from "@babylonjs/core";
-import { addExternalModels} from "./components/ExternalMeshLoader";
-import { addLight } from "./components/LightManager";
-import { addCamera } from "./components/CameraManager";
-import { addSkybox } from "./components/SkyboxManager";
+import { loadAllAssets } from "./components/LoaderManager";
 import '@babylonjs/loaders';
 import '@babylonjs/inspector';
 
 var scene;
-var camera;
 var canv;
-var model;
 
 class BabylonScene extends Component {
 
@@ -19,22 +14,20 @@ class BabylonScene extends Component {
     this.state = { useWireFrame: false, shouldAnimate: false };
   }
 
-  componentDidMount = () => {
+    componentDidMount = () => {
 
     this.engine = new BABYLON.Engine(this.canvas, true);
 
     scene = new BABYLON.Scene(this.engine);
 
-    scene.debugLayer.show();
+    // scene.debugLayer.show();
 
     canv = this.canvas;
 
-    addCamera();
-    addExternalModels(model,scene);
-    addLight(scene);
-    addSkybox(scene);
-
     window.addEventListener("resize", this.onWindowResize, false);
+
+    scene.onBeforeRenderObservable.runCoroutineAsync(
+    loadAllAssets(canv, scene));
 
     // Render Loop
     this.engine.runRenderLoop(function () {

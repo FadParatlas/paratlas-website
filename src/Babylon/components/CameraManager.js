@@ -10,4 +10,6 @@ export function addCamera(camera,canv,scene) {
     camera.attachControl(canv, false);
 
     camera.inertia = 0;
+
+    return camera;
 }
