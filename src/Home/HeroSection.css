@@ -14,7 +14,7 @@
 .hero-container>.babylon-app {
   object-fit: fill;
   width: 100vw;
-  height: 80vh;
+  height: 100vh;
   top:-5vh;
   position: absolute;
   z-index: 1;
@@ -22,7 +22,7 @@
 }
 
 .hero-container>h1 {
-  color: #687faab4;
+  color: #424242;
   position: absolute;
   top :25vh;
   left: 15vw;
@@ -45,7 +45,7 @@
 }
 
 .hero-btns {
-  margin-top: 200px;
+  margin-top: 230px;
   z-index: 4;
   position: absolute;
   top:30vh;
@@ -73,8 +73,8 @@
     margin-top: -200px;
   }
 
-  .btn-mobile {
-    margin-top: 40px;
+  .hero-btns .btn {
+    margin-top: 50px;
   }
 }
 

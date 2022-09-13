@@ -3,12 +3,27 @@ import '../App.css';
 import { Button } from '../components/Button';
 import './HeroSection.css';
 import Babylonapp from '../Babylon/Babylonapp';
+import { TypeAnimation } from 'react-type-animation';
+
 
 function HeroSection() {
 
   return (
     <div className='hero-container'>
-      <h1>Create interactive visuals with no code</h1>
+      <TypeAnimation
+        sequence={[
+          'Create Interactive Visuals', 
+          1000,
+          'With No Code',
+          1000, 
+          () => {
+            console.log('Done typing!');
+          }
+        ]}
+        wrapper="h1"
+        cursor={true}
+        repeat={Infinity}
+      />
       <div className='hero-btns'>
         <Button
           className='btns'
