@@ -22,13 +22,13 @@
 }
 
 .hero-container>h1 {
-  color: #424242;
+  color: rgba(230, 230, 230, 0.753);
   position: absolute;
   top :25vh;
-  left: 15vw;
-  max-width: 1000px;
-  font-size: 100px;
-  text-align: start;
+  /* left: 15vw; */
+  max-width: 1500px;
+  font-size: 150px;
+  text-align: center;
   font-family: 'Poppins', sans-serif;
   font-weight: 80;
   overflow: hidden;
@@ -48,8 +48,9 @@
   margin-top: 230px;
   z-index: 4;
   position: absolute;
-  top:30vh;
-  left: 15vw;
+  top:40vh;
+  /* left: 43.5vw; */
+  align-items: center ;
 }
 
 .hero-btns .btn {
@@ -77,10 +78,16 @@
     margin-top: 50px;
   }
 }
+@media screen and (max-width: 1360px) {
+  .hero-container>h1 {
+    font-size: 150px;
+    margin-top: -180px;
+  }
+}
 
 @media screen and (max-width: 960px) {
   .hero-container>h1 {
-    font-size: 85px;
+    font-size: 120px;
     margin-top: -20px;
   }
 
@@ -96,7 +103,7 @@
 
 @media screen and (max-width: 768px) {
   .hero-container>h1 {
-    font-size: 72px;
+    font-size: 120px;
     margin-top: -50px;
     max-width: 600px;
   }
@@ -105,14 +112,4 @@
     font-size: 30px;
     margin-top: -200px;
   }
-
-  /* .btn-mobile {
-    margin-top: -20px;
-    display: block;
-    text-decoration: none;
-  } */
-
-  /* .btn {
-    width: 100%;
-  } */
 }

@@ -27,6 +27,7 @@ class BabylonScene extends Component {
     window.addEventListener("resize", this.onWindowResize, false);
 
     scene.onBeforeRenderObservable.runCoroutineAsync(
+      
     loadAllAssets(canv, scene));
 
     // Render Loop

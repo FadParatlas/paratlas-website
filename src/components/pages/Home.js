@@ -1,14 +1,17 @@
 import '../../App.css'
 import HeroSection from '../../Home/HeroSection';
 import Content from '../../Home/content';
-import React from 'react'
+import React from 'react';
+import {motion} from 'framer-motion';
 
 function Home() {
     return (
-        <div className='home-content-wrapper'>
+        <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: "0%" }}
+        className ='home-content-wrapper'>
             <HeroSection className='hero-section' />
-            <Content className='content-section' />
-        </div>
+        </motion.div>
     )
 }
 

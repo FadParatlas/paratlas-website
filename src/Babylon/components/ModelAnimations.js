@@ -1,34 +1,38 @@
 import * as BABYLON from "@babylonjs/core";
+import { get } from "animejs";
 
-export function airFryerAnimation(scene, model, camera) {
+var lampstat = 0;
 
-    const baseAnim = scene.getAnimationGroupByName(
-        "Idle");
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 
-    baseAnim.start(true, 1.0, baseAnim.from, baseAnim.to, false);
-
-    const modelAnim = scene.getAnimationGroupByName(
-        "Open_Handle");
-    const modelAnim2 = scene.getAnimationGroupByName(
-        "Tumble");
+export function behaviourManager(scene, model, camera) {
 
     scene.onPointerDown = function castRay() {
         var ray = scene.createPickingRay(scene.pointerX, scene.pointerY,
             BABYLON.Matrix.Identity(), camera);
+        var lamp = scene.getMaterialByName("LIGHT");
+        var paint = scene.getMaterialByName("white paint");
+        var light = scene.getLightByName("light1");
 
         var hit = scene.pickWithRay(ray);
 
-        if (hit.pickedMesh) {
-            var anim =
-                modelAnim.start(false, 1.0, modelAnim.from, modelAnim.to, false);
-            /* run animations after end of animation
-            * @TODO: create a idle animation of the object in an open position
-            * @TODO: add states of the object, idle(0) > open(1) > idle_open(2) > close(3)
-            * idle_2(4) > tumble(5) > _untumble(6) > idle(7)  
-            */
-            anim.onAnimationEndObservable.add(() => {
-                modelAnim2.start(false, 1.0, modelAnim2.from, modelAnim2.to, false);
-            });
+        if (hit.pickedMesh && lampstat === 0) {
+            lamp.emissiveColor = new BABYLON.Color3(0, 0, 0);
+            paint.emissiveColor = new BABYLON.Color3(0, 0, 0);
+            light.diffuse =  new BABYLON.Color3(0, 0, 0);
+            lampstat = getRandomInt(3);
+        } else if (hit.pickedMesh && lampstat === 1) {
+            lamp.emissiveColor = new BABYLON.Color3(1, 1, 1);
+            paint.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+            light.diffuse = new BABYLON.Color3(1, 1, 1);
+            lampstat = getRandomInt(3);
+        } else if (hit.pickedMesh && lampstat === 2) {
+            lamp.emissiveColor = new BABYLON.Color3(getRandomInt(255)/255, getRandomInt(255)/255, getRandomInt(255)/255);
+            paint.emissiveColor = lamp.emissiveColor;
+            light.diffuse = lamp.emissiveColor;
+            lampstat = getRandomInt(3);
         }
     }
 }

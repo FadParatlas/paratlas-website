@@ -14,10 +14,12 @@ function HeroSection() {
         sequence={[
           'Create Interactive Visuals', 
           1000,
-          'With No Code',
-          1000, 
+          'Create Interactive Presentations',
+          1000,
+          'Create Interactive Animations', 
+          3000,
           () => {
-            console.log('Done typing!');
+            //attach callbacks here
           }
         ]}
         wrapper="h1"
@@ -38,7 +40,7 @@ function HeroSection() {
           buttonSize='btn--large'
           onClick={console.log('hey')}
         >
-          Try it out <i className='far fa-play-circle' />
+          Demo <i className='far fa-play-circle' />
         </Button>
       </div>
       <div className='babylon-app'>

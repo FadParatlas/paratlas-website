@@ -11,11 +11,10 @@ export function* loadAllAssets(canv, scene) {
 
     camera = addCamera(canv,scene);
     yield;
-    model = addExternalModels(model,scene);
+    model = addExternalModels(scene);
     yield;
-    addLight(scene,camera);
+    addLight(scene,camera,model);
     yield;
     addSkybox(scene);
     yield;
-
 }
