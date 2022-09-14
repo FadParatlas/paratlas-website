@@ -1,74 +1,34 @@
-import React, { Component } from "react";
-import * as BABYLON from "@babylonjs/core";
+import React from "react";
 import { loadAllAssets } from "./components/LoaderManager";
+import SceneComponent from 'babylonjs-hook';
 import '@babylonjs/loaders';
 import '@babylonjs/inspector';
 
-var scene;
-var canv;
+const mystyle = {
+  width: "100vw",
+  height: "100vh"
+};
 
-class BabylonScene extends Component {
+const onSceneReady = (scene) => {
 
-  constructor(props) {
-    super(props);
-    this.state = { useWireFrame: false, shouldAnimate: false };
-  }
+  const canvas = scene.getEngine().getRenderingCanvas();
 
-    componentDidMount = () => {
-
-    this.engine = new BABYLON.Engine(this.canvas, true);
-
-    scene = new BABYLON.Scene(this.engine);
-
-    // scene.debugLayer.show();
-
-    canv = this.canvas;
-
-    window.addEventListener("resize", this.onWindowResize, false);
-
-    scene.onBeforeRenderObservable.runCoroutineAsync(
-      
-    loadAllAssets(canv, scene));
-
-    // Render Loop
-    this.engine.runRenderLoop(function () {
-      scene.render();
-    });
-
-  };
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.onWindowResize, false);
-  }
-  windowResizeListener = () => {
-    let windowW, windowH;
-    windowW = window.innerWidth;
-    windowH = window.innerHeight;
-    console.log("listener : " + windowW + " , " + windowH);
-  }
-
-  onWindowResize = event => {
-    this.engine.resize();
-    console.log(canv.size);
-    this.windowResizeListener();
-  };
+  loadAllAssets(canvas, scene);
+  
+};
 
 
-  detectInteraction = () => {
-    window.addEventListener("click", (e) => {
+const onRender = (scene) => {
 
-    })
-  }
+};
 
-  render() {
-    return (
-      <canvas
-        style={{ width: "100%", height: "100%" }}
-        ref={canvas => {
-          this.canvas = canvas;
-        }}
-      ></canvas>
-    );
-  }
-}
-export default BabylonScene; 
+export default () => (
+  <div>
+    <SceneComponent
+      style={mystyle}
+      antialias
+      onSceneReady={onSceneReady}
+      onRender={onRender}
+      id="my-canvas" />
+  </div>
+);

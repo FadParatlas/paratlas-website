@@ -13,7 +13,7 @@ function Demo() {
   return (
     <React.Fragment>
       {!isLoaded && (
-        <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
+        <p className="loader">Loading Application... {Math.round(loadingProgression * 100)}%</p>
       )}
       <Unity className="unity-app" unityProvider={unityProvider} style={{ 
         width: "100vw", 

@@ -1,20 +1,16 @@
-import { addExternalModels} from "../components/ExternalMeshLoader";
+import { addExternalModels } from "../components/ExternalMeshLoader";
 import { addLight } from "../components/LightManager";
 import { addCamera } from "../components/CameraManager";
 import { addSkybox } from "../components/SkyboxManager";
 import '@babylonjs/loaders';
 
 var camera;
-var model;
+let loader = false;
 
-export function* loadAllAssets(canv, scene) {
+export async function loadAllAssets(canvas, scene) {
 
-    camera = addCamera(canv,scene);
-    yield;
-    model = addExternalModels(scene);
-    yield;
-    addLight(scene,camera,model);
-    yield;
+    camera = addCamera(canvas, scene);
+    addLight(scene, camera);
     addSkybox(scene);
-    yield;
+    addExternalModels(scene);
 }

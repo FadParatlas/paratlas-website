@@ -1,27 +1,25 @@
 import * as BABYLON from "@babylonjs/core";
 import '@babylonjs/loaders';
 import { behaviourManager } from "./ModelAnimations";
+import React, { useState, useEffect } from 'react';
 
-export function addExternalModels(scene, model) {
-  const importModels = BABYLON.SceneLoader.ImportMeshAsync(null,
+var loader = false;
+var model = null;
+
+export function addExternalModels(scene) {
+
+  var assetsManager = new BABYLON.AssetsManager(scene);
+  var importModels = assetsManager.addMeshTask("lamp task", "",
     "https://dl.dropbox.com/s/6sqhj0m9u6yhuzo/"
-    , "aaaaaa.glb?", scene, function (evt) {
-      var loadedPercent = 0;
-      if (evt.lengthComputable) {
-          loadedPercent = (evt.loaded * 100 / evt.total).toFixed();
-      } else {
-          var dlCount = evt.loaded / (1024 * 1024);
-          loadedPercent = Math.floor(dlCount * 100.0) / 100.0;
-      }
-      console.log(loadedPercent);
-    })
+    , "aaaaaa.glb?");
 
-  importModels.then((result) => {
+  importModels.onSuccess = function (task) {
 
-    model = result.meshes[0];
+    loader = true;
+    model = task.loadedMeshes[0];
     model.position = new BABYLON.Vector3(0, 0, 0);
-    model.rotation = new BABYLON.Vector3(0,0, 0);
-    model.scaling = new BABYLON.Vector3(20,20,20);
+    model.rotation = new BABYLON.Vector3(0, 0, 0);
+    model.scaling = new BABYLON.Vector3(20, 20, 20);
 
     // airFryerAnimation(scene, model, camera);
 
@@ -32,7 +30,7 @@ export function addExternalModels(scene, model) {
     mat.reflectionTexture = probe.cubeTexture;
 
     var paint = scene.getMaterialByName("white paint");
-    paint.emissiveColor = new BABYLON.Color3(0.2,0.2,0.2);
+    paint.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
 
     behaviourManager(scene, model);
 
@@ -57,7 +55,20 @@ export function addExternalModels(scene, model) {
     scene.fogColor = scene.clearColor;
     scene.fogStart = 30.0;
     scene.fogEnd = 50.0;
+  }
 
-    return model;
-  })
+  // BABYLON.SceneLoader.ShowLoadingScreen = false;
+  // assetsManager.useDefaultLoadingScreen = false;
+  assetsManager.load();
+
+  assetsManager.onProgress = function (remainingCount, totalCount, lastFinishedTask) {
+    loader = false;
+  }
+  assetsManager.onFinish = function (tasks) {
+    loader = true;
+    console.log(loader);
+  }
 }
+
+ 
+

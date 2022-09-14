@@ -5,26 +5,47 @@ import { BrowserRouter as Router, Routes, Route } from
 import './App.css';
 import Home from './components/pages/Home';
 import Demo from './components/pages/Demo';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ClipLoader } from 'react-spinners';
 
 
 function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Navbar />
-        <AnimatePresence>
-          <Routes>
-            <Route path='/' element=
-              {<Home />} />
-            <Route path='/Demo' element=
-              {<Demo />} />
-          </Routes>
-        </AnimatePresence>
-      </Router>
+  const [isLoading, setIsLoading] = useState(true);
 
-    </div>
+  const handleLoading = () => {
+  setIsLoading(false);
+  }
+  
+  useEffect(()=>{
+  window.addEventListener("load",handleLoading);
+  return () => window.removeEventListener("load",handleLoading);
+  },[])
+  
+
+  return (
+    <>
+    {isLoading === false ? (
+    <div className="App">
+          <Router>
+            <Navbar />
+            <AnimatePresence>
+              <Routes>
+                <Route path='/' element=
+                  {<Home />} />
+                <Route path='/Demo' element=
+                  {<Demo />} />
+              </Routes>
+            </AnimatePresence>
+          </Router>
+      {/* } */}
+    </div>) : (
+      <ClipLoader
+      size={30}
+      color={"#123abc"}
+    />
+    )}
+    </>
   );
 }
 
