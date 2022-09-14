@@ -103,7 +103,7 @@
 
 @media screen and (max-width: 768px) {
   .hero-container>h1 {
-    font-size: 120px;
+    font-size: 100px;
     margin-top: -50px;
     max-width: 600px;
   }

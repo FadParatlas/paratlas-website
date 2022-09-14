@@ -91,7 +91,9 @@
 }
 
 @media screen and (max-width: 1160px) {
-
+  .navbar {
+    width: 80vw;
+  }
   .NavbarItems {
     position: absolute;
   }
