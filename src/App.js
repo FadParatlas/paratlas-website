@@ -11,21 +11,20 @@ import { ClipLoader } from 'react-spinners';
 
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  const handleLoading = () => {
-  setIsLoading(false);
-  }
+  // const handleLoading = () => {
+  // setIsLoading(false);
+  // }
   
-  useEffect(()=>{
-  window.addEventListener("load",handleLoading);
-  return () => window.removeEventListener("load",handleLoading);
-  },[])
+  // useEffect(()=>{
+  // window.addEventListener("load",handleLoading);
+  // return () => window.removeEventListener("load",handleLoading);
+  // },[])
   
 
   return (
     <>
-    {isLoading === false ? (
     <div className="App">
           <Router>
             <Navbar />
@@ -39,12 +38,7 @@ function App() {
             </AnimatePresence>
           </Router>
       {/* } */}
-    </div>) : (
-      <ClipLoader
-      size={30}
-      color={"#123abc"}
-    />
-    )}
+    </div>
     </>
   );
 }
