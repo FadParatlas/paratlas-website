@@ -5,10 +5,10 @@ import "./Demo.css";
 
 function Demo() {
   const { unityProvider, loadingProgression, isLoaded } = useUnityContext({
-    loaderUrl: "/Build/Presentation.loader.js",
-    dataUrl: "/Build/Presentation.data",
-    frameworkUrl: "/Build/Presentation.framework.js",
-    codeUrl: "/Build/Presentation.wasm",
+    loaderUrl: "/Build/Mayer.loader.js",
+    dataUrl: "/Build/Mayer.data",
+    frameworkUrl: "/Build/Mayer.framework.js",
+    codeUrl: "/Build/Mayer.wasm",
   });
   return (
     <React.Fragment>
